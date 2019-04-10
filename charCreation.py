@@ -10,16 +10,16 @@ This spot is reserved to determine how to ensure one account has one character
 '''
 key = level
 Element = value
-0       = Hit Points
+0       = hit Points
 1       = minimum damage
 2       = maximum damage
 3       = total ability points
 4       = total number of feats
 5       = base to hit modifier
 6       = base Armor Class
-7       = Experience Points to next level
+7       = experience Points to next level
 '''
-def charBasics():
+def basics():
     levelDict = {1: [ 25,  1,   6,   15,   2,  1,  5,   30],
                  2: [ 30,  1,   6,   15,   2,  2,  6,   90],
                  3: [ 35,  1,   8,   15,   3,  2,  7,  180],
@@ -50,6 +50,7 @@ def charBasics():
     print("Ability Points to Allocate: " + str(levelDict[int(playerLevel)][3]))
     statPoints = levelDict[int(playerLevel)][3]
     print("Total Feats:                " + str(levelDict[int(playerLevel)][4]))
+    statFeats = levelDict[int(playerLevel)[4]]
     print("Total Base To Hit Modifier: " + str(levelDict[int(playerLevel)][5]))
     statHit = levelDict[int(playerLevel)][5]
     print("Total Base damage Modifier: " + str(levelDict[int(playerLevel)][5]))
@@ -58,9 +59,9 @@ def charBasics():
     statAC = levelDict[int(playerLevel)][6]
     toNextLevel = (levelDict[int(playerLevel)][7]) - playerXP
     print("You currently have: " + str(playerXP) + " experience and need: " + str(toNextLevel) + " to reach the next level.")
-    return playerLevel, statHP, statHit, statDamage, statPoints, statAC, playerXP, toNextLevel, charName
+    return playerLevel, statHP, statHit, statDamage, statPoints, statFeats, statAC, playerXP, toNextLevel, charName
 
-def charAbilities(charInfo):
+def abilities(charInfo):
     statPoints = charInfo[4]
     print("You have " + str(statPoints) + " points to distribute between Strength, Dexterity, and Constitution.")
     print("No single stat can be above 10 points")
@@ -94,7 +95,7 @@ def charAbilities(charInfo):
         answer = input("Do you wish to keep these stats? (yes/no)").lower()
     return strMod, dexMod, conMod
 
-def saveChar(charInfo, charMods):
+def save(charInfo, charMods):
 
     # Create an empty dictonary
     characterFile = {}
@@ -103,6 +104,7 @@ def saveChar(charInfo, charMods):
     characterFile["name"] = charInfo[8]
     characterFile["level"] = charInfo[0]
     characterFile["hitpoints"] = charInfo[1] + charMods[2]
+    characterFile["total feats"] = charInfo[4]
     characterFile["hit"] = charInfo[2] + charMods[0]
     characterFile["damage"] = charInfo[2] + charMods[0]
     characterFile["ac"] = charInfo[5] + charMods[1]
