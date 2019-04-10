@@ -18,6 +18,9 @@ Element = value
 5       = base to hit modifier
 6       = base Armor Class
 7       = experience Points to next level
+
+Strictly speaking, this script only needs the first key in the levelDict. However, the entire dictionary is placed here
+if needed later.
 '''
 def basics():
     levelDict = {1: [ 25,  1,   6,   15,   2,  1,  5,   30],
@@ -40,8 +43,11 @@ def basics():
                 18: [135,  4,  32,   18,  10, 10, 23, 5130],
                 19: [140,  3,  36,   18,  11, 10, 24, 5700],
                 20: [150,  3,  36,   19,  11, 11, 25, 6300]}
+
+    # As this is character creation, level will always be equal to 1, and xp always equal to 0
     playerLevel = 1
     playerXP = 0
+    # Grabs character's name, and then assigns appropriate values from the dictionary above to display.
     charName = input("What is your characters name? ")
     print("Your character's name is " + charName + ", and will start out at level one with the following stats:")
     print("Hit Points:                 " + str(levelDict[int(playerLevel)][0]))
@@ -61,6 +67,10 @@ def basics():
     print("You currently have: " + str(playerXP) + " experience and need: " + str(toNextLevel) + " to reach the next level.")
     return playerLevel, statHP, statHit, statDamage, statPoints, statFeats, statAC, playerXP, toNextLevel, charName
 
+    # This function focuses purely on assigning values to the three primary stats: Strength, Dexterity, and
+    # Constitution. While loops are set in place to ensure that no value is placed above 10, or any remaining points
+    # they player has left to allocate. Once completed, the information is displayed with their appropriate modifiers
+    # and the player is asked if they want to keep their setup, or redistribute.
 def abilities(charInfo):
     statPoints = charInfo[4]
     print("You have " + str(statPoints) + " points to distribute between Strength, Dexterity, and Constitution.")
@@ -95,6 +105,9 @@ def abilities(charInfo):
         answer = input("Do you wish to keep these stats? (yes/no)").lower()
     return strMod, dexMod, conMod
 
+    # Grabs all the necessary information from the above functions, and commits them to a JSON file labeled with thier
+    # character name.
+
 def save(charInfo, charMods):
 
     # Create an empty dictonary
@@ -117,6 +130,7 @@ def save(charInfo, charMods):
 
     print("Your character has been created and saved.")
 
+# for testing purposes
 # charInfo = charBasics()
 # charMods = charAbilities(charInfo)
 # saveChar(charInfo, charMods)

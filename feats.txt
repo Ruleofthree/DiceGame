@@ -188,14 +188,14 @@
 
     "greater hurt me": {
       "desc": "increases hurt me bonus to +3",
-      "requirements": [10, 0, 8, 0, "improved hurt me"],
+      "requirements": [10, 0, 0, 8, "improved hurt me"],
       "status": "passive"
     },
 
     "hurt me more": {
       "name": "hurt me more",
       "desc": "applies the +3 bonus for every 20% lost",
-      "requirements": [ 15, 0, 10, 0, "greater hurt me"],
+      "requirements": [ 15, 0, 0, 10, "greater hurt me"],
       "status": "passive"
     }
   }

@@ -1,5 +1,9 @@
 import json
 
+"""
+script that opens the JSON file of the character
+"""
+
 def charSheet():
     charFile = open("Irixis.txt", "r", encoding="utf-8")
     charInfo = json.load(charFile)
@@ -21,3 +25,7 @@ def charSheet():
     print("Armor Class:        " + str(charAC))
     print("Current XP:         " + str(charXP))
     print("XP needed to level: " + str(nextLevel))
+
+"""
+Reserved for adding in feat information when available.
+"""
