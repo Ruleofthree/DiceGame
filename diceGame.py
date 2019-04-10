@@ -8,8 +8,8 @@ class Hub(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.prompt = "Hub > "
         print("Welcome to the Hub. From here, you can create your first character and view the character sheet with the"
-              " 'char' command, or review and select feats with the 'feat' command. For more information on both, please"
-              " type help <command>.")
+              " 'char' command, or review and select feats with the 'feats' command. For more information on both,"
+              " please type help <command>.")
 
     def  do_char(self, args):
         """this command will give you access to the 'start' command, to create your character for this account. It
@@ -18,7 +18,7 @@ containing all needed information"""
         character = Character()
         character.cmdloop()
 
-    def do_feat(self, args):
+    def do_feats(self, args):
         """this command will give you access to the commands to look at all feats in the game and their descriptions
 and any required qualifications that are needed before taking the feat. Feats are divided into four catagories:
 Strength, Dexterity, Constition, and Magic.
