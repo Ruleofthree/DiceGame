@@ -1,0 +1,10 @@
+{
+  "name": "Irixis",
+  "level": 1,
+  "hitpoints": 30,
+  "hit": 4,
+  "damage": 4,
+  "ac": 9,
+  "currentxp": 683,
+  "nextlevel": 840
+}
