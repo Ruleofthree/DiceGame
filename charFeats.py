@@ -1,7 +1,5 @@
 import json
 
-
-
 def strfeatList():
     featFile = open("feats.txt", "r", encoding="utf-8")
     featInfo = json.load(featFile)
