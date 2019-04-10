@@ -15,8 +15,14 @@ class Character(cmd.Cmd):
         charMods = charCreation.abilities(charStats)
         charCreation.save(charStats, charMods)
 
-    def do_listfeatsstrength(self, args):
-        charFeats.featlist()
+    def do_liststrfeats(self, args):
+        charFeats.strfeatList()
+
+    def do_listdexfeats(self, args):
+        charFeats.dexfeatList()
+
+    def do_listconfeats(self, args):
+        charFeats.confeatList()
 
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""
