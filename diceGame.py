@@ -1,6 +1,7 @@
 import cmd
 import charCreation
 import charInfo
+import charFeats
 
 class Character(cmd.Cmd):
     def __init__(self):
@@ -14,8 +15,8 @@ class Character(cmd.Cmd):
         charMods = charCreation.abilities(charStats)
         charCreation.save(charStats, charMods)
 
-    def do_feats(self, args):
-        pass
+    def do_listfeatsstrength(self, args):
+        charFeats.featlist()
 
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""
