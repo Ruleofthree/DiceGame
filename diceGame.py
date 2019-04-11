@@ -20,8 +20,8 @@ containing all needed information"""
 
     def do_feats(self, args):
         """this command will give you access to the commands to look at all feats in the game and their descriptions
-and any required qualifications that are needed before taking the feat. Feats are divided into four catagories:
-Strength, Dexterity, Constition, and Magic.
+and any required qualifications that are needed before taking the feat. Feats are divided into three catagories:
+Strength, Dexterity, and Constition.
         """
         feats = Feats()
         feats.cmdloop()
@@ -59,7 +59,7 @@ class Feats(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.prompt = "Feats > "
         print("Welcome to Feat Selection. Here you can view the lists of feats for any given category: Strength"
-              " Dexterity, Constitution, and Magic. Simply type 'listfeats' and then the first three letters of the"
+              " Dexterity, Constitution, and. Simply type 'listfeats' and then the first three letters of the"
               " category you wish to see. Example: To see strength feats, type 'listfeatsstr'. For further information"
               " type 'help' for a list of commands")
 
