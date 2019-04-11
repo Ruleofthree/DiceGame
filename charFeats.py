@@ -102,3 +102,17 @@ def confeatList():
             print(desc)
             print("Prerequisites: " + "Level: " + str(level) + " Strength: " + str(reqStr) + " Dexterity: " + str(
                 reqDex) + " Constitution: " + str(reqCon) + " Required Feats: " + reqFeats)
+
+def getFeat():
+    charFile = open("Irixis.txt", "r", encoding="utf-8")
+    charInfo = json.load(charFile)
+    charFile.close()
+    charName = charInfo["name"]
+    charLevel = charInfo["level"]
+    charHP = charInfo["hitpoints"]
+    charHit = charInfo["hit"]
+    charDamage = charInfo["damage"]
+    charAC = charInfo["ac"]
+    charXP = charInfo["currentxp"]
+    nextLevel = charInfo["nextlevel"]
+

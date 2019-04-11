@@ -56,7 +56,7 @@ def basics():
     print("Ability Points to Allocate: " + str(levelDict[int(playerLevel)][3]))
     statPoints = levelDict[int(playerLevel)][3]
     print("Total Feats:                " + str(levelDict[int(playerLevel)][4]))
-    statFeats = levelDict[int(playerLevel)[4]]
+    statFeats = levelDict[int(playerLevel)][4]
     print("Total Base To Hit Modifier: " + str(levelDict[int(playerLevel)][5]))
     statHit = levelDict[int(playerLevel)][5]
     print("Total Base damage Modifier: " + str(levelDict[int(playerLevel)][5]))
@@ -67,12 +67,24 @@ def basics():
     print("You currently have: " + str(playerXP) + " experience and need: " + str(toNextLevel) + " to reach the next level.")
     return playerLevel, statHP, statHit, statDamage, statPoints, statFeats, statAC, playerXP, toNextLevel, charName
 
+'''
+basics[0] = Level
+basics[1] = Hit Points
+basics[2] = To Hit Modifier
+basics[3] = Damage Modifier
+basics[4] = Total ability points
+basics[5] = Total feats
+basics[6] = Armor Class
+basics[7] = player current xp
+basics[8] = xp to next level
+basics[9] = character name
+'''
     # This function focuses purely on assigning values to the three primary stats: Strength, Dexterity, and
     # Constitution. While loops are set in place to ensure that no value is placed above 10, or any remaining points
     # they player has left to allocate. Once completed, the information is displayed with their appropriate modifiers
     # and the player is asked if they want to keep their setup, or redistribute.
-def abilities(charInfo):
-    statPoints = charInfo[4]
+def abilities(basics):
+    statPoints = basics[4]
     print("You have " + str(statPoints) + " points to distribute between Strength, Dexterity, and Constitution.")
     print("No single stat can be above 10 points")
     answer = "no"
@@ -108,29 +120,42 @@ def abilities(charInfo):
     # Grabs all the necessary information from the above functions, and commits them to a JSON file labeled with thier
     # character name.
 
-def save(charInfo, charMods):
+def save(basics, abilities):
 
     # Create an empty dictonary
     characterFile = {}
 
+    '''
+    basics[0] = Level
+    basics[1] = Hit Points                  abilities[2] = Hit Point Modifier
+    basics[2] = To Hit                      abilities[0] = To Hit Modifier
+    basics[3] = Damage                      abilities[0] = Damage Modifier
+    basics[4] = Total ability points
+    basics[5] = Total feats
+    basics[6] = Armor Class                 abilities[1] = Armor Class Modifier
+    basics[7] = player current xp
+    basics[8] = xp to next level
+    basics[9] = character name
+    '''
+
     # Fill the dictionary with required information
-    characterFile["name"] = charInfo[8]
-    characterFile["level"] = charInfo[0]
-    characterFile["hitpoints"] = charInfo[1] + charMods[2]
-    characterFile["total feats"] = charInfo[4]
-    characterFile["hit"] = charInfo[2] + charMods[0]
-    characterFile["damage"] = charInfo[2] + charMods[0]
-    characterFile["ac"] = charInfo[5] + charMods[1]
-    characterFile["currentxp"] = charInfo[6]
-    characterFile["nextlevel"] = charInfo[7]
+    characterFile["name"] = basics[9]
+    characterFile["level"] = basics[0]
+    characterFile["hitpoints"] = basics[1] + abilities[2]
+    characterFile["total feats"] = basics[5]
+    characterFile["hit"] = basics[2] + abilities[0]
+    characterFile["damage"] = basics[2] + abilities[0]
+    characterFile["ac"] = basics[6] + abilities[1]
+    characterFile["currentxp"] = basics[7]
+    characterFile["nextlevel"] = basics[8]
 
     # create the JSON file
-    file = open(charInfo[8] + ".txt", "w", encoding="utf-8")
+    file = open(basics[9] + ".txt", "w", encoding="utf-8")
     json.dump(characterFile, file, ensure_ascii=False, indent=2)
 
     print("Your character has been created and saved.")
 
 # for testing purposes
-# charInfo = charBasics()
-# charMods = charAbilities(charInfo)
-# saveChar(charInfo, charMods)
+# basics = basics()
+# abilities = abilities(basics)
+# save(basics, abilities)
