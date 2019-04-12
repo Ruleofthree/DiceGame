@@ -115,30 +115,30 @@ def abilities(basics):
         conMod = int(conStat) * 5
         print("Your Constitution: " + str(conStat) + " giving you bonus HP of + " + str(int(conMod)))
         answer = input("Do you wish to keep these stats? (yes/no)").lower()
-    return strMod, dexMod, conMod
+    return strMod, dexMod, conMod, strengthStat, dexterityStat, conStat
 
-    # Grabs all the necessary information from the above functions, and commits them to a JSON file labeled with thier
+    # Grabs all the necessary information from the above functions, and commits them to a JSON file labeled with their
     # character name.
 
 def save(basics, abilities):
 
-    # Create an empty dictonary
+    # Create an empty dictionary
     characterFile = {}
+    featList = []
+    # basics[0] = Level
+    # basics[1] = Hit Points                  abilities[2] = Hit Point Modifier
+    # basics[2] = To Hit                      abilities[0] = To Hit Modifier
+    # basics[3] = Damage                      abilities[0] = Damage Modifier
+    # basics[4] = Total ability points
+    # basics[5] = Total feats
+    # basics[6] = Armor Class                 abilities[1] = Armor Class Modifier
+    # basics[7] = player current xp
+    # basics[8] = xp to next level
+    # basics[9] = character
 
-    '''
-    basics[0] = Level
-    basics[1] = Hit Points                  abilities[2] = Hit Point Modifier
-    basics[2] = To Hit                      abilities[0] = To Hit Modifier
-    basics[3] = Damage                      abilities[0] = Damage Modifier
-    basics[4] = Total ability points
-    basics[5] = Total feats
-    basics[6] = Armor Class                 abilities[1] = Armor Class Modifier
-    basics[7] = player current xp
-    basics[8] = xp to next level
-    basics[9] = character name
-    '''
 
     # Fill the dictionary with required information
+
     characterFile["name"] = basics[9]
     characterFile["level"] = basics[0]
     characterFile["hitpoints"] = basics[1] + abilities[2]
@@ -148,6 +148,12 @@ def save(basics, abilities):
     characterFile["ac"] = basics[6] + abilities[1]
     characterFile["currentxp"] = basics[7]
     characterFile["nextlevel"] = basics[8]
+    characterFile["strength"] = int(abilities[3])
+    characterFile["dexterity"] = int(abilities[4])
+    characterFile["constitution"] = int(abilities[5])
+    characterFile["player feats"] = featList
+    # apply a hidden counter, that will keep track of number of feats throughout level progression
+    characterFile["remaining feats"] = 2
 
     # create the JSON file
     file = open(basics[9] + ".txt", "w", encoding="utf-8")

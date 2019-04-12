@@ -1,3 +1,5 @@
+# Adam A. www.upwork.com
+
 import cmd
 import charCreation
 import charInfo
@@ -71,6 +73,9 @@ class Feats(cmd.Cmd):
 
     def do_listfeatscon(self, args):
         charFeats.confeatList()
+
+    def do_getfeat(self,args):
+        charFeats.getFeat()
 
     def do_quit(self, args):
         """Leaves Feat Selection"""
