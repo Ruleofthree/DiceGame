@@ -22,6 +22,8 @@ def charSheet():
     charStr = charInfo["strength"]
     charDex = charInfo["dexterity"]
     charCon = charInfo["constitution"]
+    charFeats = charInfo["player feats"]
+    remainingFeats = charInfo["remaining feats"]
 
     print("Character Name:     " + charName)
     print("Level:              " + str(charLevel) + "       Strength:     " + str(charStr))
@@ -33,8 +35,12 @@ def charSheet():
     print("Current XP:         " + str(charXP))
     print("XP needed to level: " + str(nextLevel))
 
-    #print("Available feats:    ") + str(currentFeatTotal)
+    print("Available feats:    ") + str(remainingFeats)
 
+    print(charName + " feats:")
+
+    print(charFeats + ": ")
+    print(charFeats["desc"])
 """
 Reserved for adding in feat information when available.
 """
