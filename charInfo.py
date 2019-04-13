@@ -1,3 +1,5 @@
+import charWrite
+import gameFeats
 import json
 
 """
@@ -7,6 +9,11 @@ script that opens the JSON file of the character
 
 
 def charSheet():
+
+    featDict = gameFeats.featDict()[0]
+    featList = gameFeats.featDict()[1]
+
+
     charFile = open("Irixis.txt", "r", encoding="utf-8")
     charInfo = json.load(charFile)
     charFile.close()
@@ -40,14 +47,21 @@ def charSheet():
 
     print("Available feats:    " + str(remainingFeats))
 
-    print("")
-    print(charName + " feats:")
-    print("")
+    if not hasTaken:
+        print("")
+        print("No feats taken yet.")
+        print("")
+    else:
+        print("")
+        print(charName + " feats:")
+        print("")
 
-    print(hasTaken + ": ")
-    print(featDict[0][hasTaken]['desc'])
+        print(hasTaken[0] + ": ")
+        print(featDict[0][hasTaken[0]]['desc'])
+        print("")
+
+        print(hasTaken[1] + ": ")
+        print(featDict[0][hasTaken[1]]['desc'])
 """
 Reserved for adding in feat information when available.
 """
-
-charSheet()
