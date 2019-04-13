@@ -44,9 +44,9 @@ class Character(cmd.Cmd):
     def do_create(self, args):
         """Use this command to create a new character. Note you can only have one character per account. Feats are
         selected using the 'feats' option"""
-        basics = charCreation.basics()
-        abilities = charCreation.abilities(basics)
-        charWrite.save(basics, abilities)
+        basics = charCreation.Character.basics()
+        abilities = charCreation.Character.abilities(basics)
+        charWrite.SaveModule.save(self, basics, abilities)
 
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""

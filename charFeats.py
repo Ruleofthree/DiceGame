@@ -1,6 +1,6 @@
 import gameFeats
 import charWrite
-import json
+# import json
 
 """
 This script is dedicated to pulling up helpful information on feats, as well as selecting them to be placed on the
@@ -20,8 +20,9 @@ def feats():
     # charCon = charInfo["constitution"]
     # charfeatList = charInfo["player feats"]
 
-    # place all keys within a list for comparison later
-    
+    #place all keys within a list for comparison later
+    information = charWrite.SaveModule.save(self, basics, abilities)
+    print(information)
     featDict = gameFeats.featDict()[0]
     featList = gameFeats.featDict()[1]
  
