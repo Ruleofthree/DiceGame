@@ -11,6 +11,7 @@ script that opens the JSON file of the character
 
 def charSheet():
 
+    print(info)
     featDict = gameFeats.featDict()[0]
     featList = gameFeats.featDict()[1]
 

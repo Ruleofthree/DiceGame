@@ -46,8 +46,8 @@ class Character(cmd.Cmd):
         selected using the 'feats' option"""
         basics = charCreation.Character.basics()
         abilities = charCreation.Character.abilities(basics)
-        name = charWrite.SaveModule.outputOriginal(self)
-        print(name)
+        charWrite.SaveModule.__init__(self, basics, abilities)
+        info = charWrite.SaveModule.outputOriginal(self)
 
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""
@@ -66,7 +66,7 @@ class Feats(cmd.Cmd):
               " Dexterity, Constitution, and. Simply type 'getfeat' to start the process.")
 
     def do_getfeat(self,args):
-        charFeats.feats()
+        charFeats.feats(information)
 
     def do_quit(self, args):
         """Leaves Feat Selection"""

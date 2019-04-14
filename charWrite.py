@@ -4,89 +4,60 @@ class SaveModule:
 
     def __init__(self, basics, abilities):
         self.name = basics[9]
-        # self.level = level
+        self.level = basics[0]
         self.hp = basics[1] + abilities[2]
-        # self.tFeats = tFeats
-        # self.hit = shit
-        # self.damage = damage
-        # self.ac = ac
-        # self.xp = xp
-        # self.nextLevel = nextLevel
-        # self.strength = strength
-        # self.dexterity = dexterity
-        # self.constitution = constitution
-        # create the JSON file
-        # file = open(basics[9] + ".txt", "w", encoding="utf-8")
-        # json.dump(characterFile, file, ensure_ascii=False, indent=2)
-        #
-        # print("Your character has been created and saved.")
+        self.tFeats = basics[5]
+        self.hit = basics[2] + abilities[0]
+        self.damage = basics[2] + abilities[0]
+        self.ac = basics[6] + abilities[1]
+        self.xp = basics[7]
+        self.nextLevel = basics[8]
+        self.strength = basics[0]
+        self.dexterity = basics[1]
+        self.constitution = basics[2]
+
 
     def outputOriginal(self):
-        SaveModule.__init__(self, basics, abilities)
-
 
         # Create an empty dictionary
-        # characterFile = {}
-        # featList = []
-        # # basics[0] = Level
-        # basics[1] = Hit Points                  abilities[2] = Hit Point Modifier
-        # basics[2] = To Hit                      abilities[0] = To Hit Modifier
-        # basics[3] = Damage                      abilities[0] = Damage Modifier
-        # basics[4] = Total ability points
-        # basics[5] = Total feats
-        # basics[6] = Armor Class                 abilities[1] = Armor Class Modifier
-        # basics[7] = player current xp
-        # basics[8] = xp to next level
-        # basics[9] = character
-
+        characterFile = {}
 
         # Fill the dictionary with required information
 
-        # characterFile["name"] = self.name
-        # name = self.name
-        # characterFile["level"] = name
-        # level = name
-        # characterFile["hitpoints"] = basics[1] + abilities[2]
-        # hp = basics[1] + abilities[2]
-        # characterFile["total feats"] = basics[5]
-        # tFeats = basics[5]
-        # characterFile["hit"] = basics[2] + abilities[0]
-        # hit = basics[2] + abilities[0]
-        # characterFile["damage"] = basics[2] + abilities[0]
-        # damage = basics[2] + abilities[0]
-        # characterFile["ac"] = basics[6] + abilities[1]
-        # ac = basics[6] + abilities[1]
-        # characterFile["currentxp"] = basics[7]
-        # xp = basics[7]
-        # characterFile["nextlevel"] = basics[8]
-        # nextLevel = basics[8]
-        # characterFile["strength"] = int(abilities[3])
-        # strength = int(abilities[3])
-        # characterFile["dexterity"] = int(abilities[4])
-        # dexterity = int(abilities[4])
-        # characterFile["constitution"] = int(abilities[5])
-        # constitution = int(abilities[5])
-        # characterFile["player feats"] = featList
-        # cFeats = featList
-        # # apply a hidden counter, that will keep track of number of feats throughout level progression
-        # characterFile["remaining feats"] = 2
-        # remainingFeats = 2
-        #
-        # # create the JSON file
-        # file = open(basics[9] + ".txt", "w", encoding="utf-8")
-        # json.dump(characterFile, file, ensure_ascii=False, indent=2)
-        # self.name = name
-        # self.level = level
-        # self.hp = hp
-        # self.tFeats = tFeats
-        # self.hit = shit
-        # self.damage = damage
-        # self.ac = ac
-        # self.xp = xp
-        # self.nextLevel = nextLevel
-        # self.strength = strength
-        # self.dexterity = dexterity
-        # self.constitution = constitution
+        name = self.name
+        characterFile["name"] = name
+        level = self.level
+        characterFile["level"] = level
+        hp = self.hp
+        characterFile["hitpoints"] = hp
+        tFeats = self.tFeats
+        characterFile["total feats"] = tFeats
+        hit = self.hit
+        characterFile["hit"] = hit
+        damage = self.damage
+        characterFile["damage"] = damage
+        ac = self.ac
+        characterFile["ac"] = ac
+        xp = self.xp
+        characterFile["currentxp"] = xp
+        nextLevel = self.level
+        characterFile["nextlevel"] = nextLevel
+        strength = self.strength
+        characterFile["strength"] = strength
+        dexterity = self.dexterity
+        characterFile["dexterity"] = dexterity
+        constitution = self.constitution
+        characterFile["constitution"] = constitution
+
+        # apply a hidden counter, that will keep track of number of feats throughout level progression
+        characterFile["remaining feats"] = 2
+        remainingFeats = 2
+
+        print("Your character has been saved.")
+        # create the JSON file
+        file = open(name + ".txt", "w", encoding="utf-8")
+        json.dump(characterFile, file, ensure_ascii=False, indent=2)
+        return name, level, hp, tFeats, hit, damage, ac, xp, nextLevel, strength, dexterity, constitution, remainingFeats
 
 
 # def update(updateChar):
