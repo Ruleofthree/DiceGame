@@ -9,33 +9,25 @@ script that opens the JSON file of the character
 
 
 
-def charSheet():
+def charSheet(info):
 
-    print(info)
     featDict = gameFeats.featDict()[0]
     featList = gameFeats.featDict()[1]
 
-
-    charFile = open("Irixis.txt", "r", encoding="utf-8")
-    charInfo = json.load(charFile)
-    charFile.close()
-    charName = charInfo["name"]
-    charLevel = charInfo["level"]
-    charHP = charInfo["hitpoints"]
-    charFeats = charInfo["total feats"]
-    charHit = charInfo["hit"]
-    charDamage = charInfo["damage"]
-    charAC = charInfo["ac"]
-    charXP = charInfo["currentxp"]
-    nextLevel = charInfo["nextlevel"]
-    charStr = charInfo["strength"]
-    charDex = charInfo["dexterity"]
-    charCon = charInfo["constitution"]
-    hasTaken = charInfo["player feats"]
-    remainingFeats = charInfo["remaining feats"]
-
-    featInfo = open("feats.txt", "r", encoding="utf-8")
-    featDict = json.load(featInfo)
+    charName = info[0]
+    charLevel = info[1]
+    charHP = info[2]
+    charFeats = info[3]
+    charHit = info[4]
+    charDamage = info[5]
+    charAC = info[6]
+    charXP = info[7]
+    nextLevel = info[8]
+    charStr = info[9]
+    charDex = info[10]
+    charCon = info[11]
+    hasTaken = info[13]
+    remainingFeats = info[12]
 
     print("Character Name:     " + charName)
     print("Level:              " + str(charLevel) + "       Strength:     " + str(charStr))

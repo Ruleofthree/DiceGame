@@ -1,4 +1,3 @@
-import charWrite
 '''
 Character Creation.
 '''
@@ -24,7 +23,7 @@ if needed later.
 '''
 class Character():
 
-    def basics():
+    def basics(self):
         levelDict = {1: [ 25,  1,   6,   15,   2,  1,  5,   30],
                      2: [ 30,  1,   6,   15,   2,  2,  6,   90],
                      3: [ 35,  1,   8,   15,   3,  2,  7,  180],
@@ -67,7 +66,7 @@ class Character():
         statAC = levelDict[int(playerLevel)][6]
         toNextLevel = (levelDict[int(playerLevel)][7]) - playerXP
         print("You currently have: " + str(playerXP) + " experience and need: " + str(toNextLevel) + " to reach the next level.")
-        return playerLevel, statHP, statHit, statDamage, statPoints, statFeats, statAC, playerXP, toNextLevel, charName
+        return [playerLevel, statHP, statHit, statDamage, statPoints, statFeats, statAC, playerXP, toNextLevel, charName]
 
     '''
     basics[0] = Level
@@ -86,7 +85,7 @@ class Character():
         # they player has left to allocate. Once completed, the information is displayed with their appropriate modifiers
         # and the player is asked if they want to keep their setup, or redistribute.
 
-    def abilities(basics):
+    def abilities(self, basics):
         statPoints = basics[4]
         print("You have " + str(statPoints) + " points to distribute between Strength, Dexterity, and Constitution.")
         print("No single stat can be above 10 points")
@@ -118,7 +117,7 @@ class Character():
             conMod = int(conStat) * 5
             print("Your Constitution: " + str(conStat) + " giving you bonus HP of + " + str(int(conMod)))
             answer = input("Do you wish to keep these stats? (yes/no)").lower()
-        return strMod, dexMod, conMod, strengthStat, dexterityStat, conStat
+        return [strMod, dexMod, conMod, strengthStat, dexterityStat, conStat]
 
     # Grabs all the necessary information from the above functions, and commits them to a JSON file labeled with their
     # character name.

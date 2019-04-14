@@ -1,4 +1,5 @@
 import json
+import charInfo
 
 class SaveModule:
 
@@ -8,13 +9,13 @@ class SaveModule:
         self.hp = basics[1] + abilities[2]
         self.tFeats = basics[5]
         self.hit = basics[2] + abilities[0]
-        self.damage = basics[2] + abilities[0]
+        self.damage = basics[3] + abilities[0]
         self.ac = basics[6] + abilities[1]
         self.xp = basics[7]
         self.nextLevel = basics[8]
-        self.strength = basics[0]
-        self.dexterity = basics[1]
-        self.constitution = basics[2]
+        self.strength = abilities[0]
+        self.dexterity = abilities[1]
+        self.constitution = abilities[2]
 
 
     def outputOriginal(self):
@@ -49,15 +50,17 @@ class SaveModule:
         constitution = self.constitution
         characterFile["constitution"] = constitution
 
-        # apply a hidden counter, that will keep track of number of feats throughout level progression
+        # apply a hidden counters, that will keep track of number of feats throughout level progression
         characterFile["remaining feats"] = 2
         remainingFeats = 2
+        hasTaken = 0
 
         print("Your character has been saved.")
         # create the JSON file
         file = open(name + ".txt", "w", encoding="utf-8")
         json.dump(characterFile, file, ensure_ascii=False, indent=2)
-        return name, level, hp, tFeats, hit, damage, ac, xp, nextLevel, strength, dexterity, constitution, remainingFeats
+        return [name, level, hp, tFeats, hit, damage, ac, xp, nextLevel, strength, dexterity, constitution, remainingFeats, hasTaken]
+
 
 
 # def update(updateChar):

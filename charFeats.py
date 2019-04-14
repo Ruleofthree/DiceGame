@@ -8,22 +8,26 @@ This script is dedicated to pulling up helpful information on feats, as well as 
 character sheet. 
 """
 
-def feats():
+def feats(info):
     
-    # Open up character information
-    # charFile = open("Irixis.txt", "r", encoding="utf-8")
-    # charInfo = json.load(charFile)
-    # charFile.close()
-    # charLevel = charInfo["level"]
-    # remainingFeats = charInfo["remaining feats"]
-    # charStr = charInfo["strength"]
-    # charDex = charInfo["dexterity"]
-    # charCon = charInfo["constitution"]
-    # charfeatList = charInfo["player feats"]
+    charName = info[0]
+    charLevel = info[1]
+    charHP = info[2]
+    charFeats = info[3]
+    charHit = info[4]
+    charDamage = info[5]
+    charAC = info[6]
+    charXP = info[7]
+    nextLevel = info[8]
+    charStr = info[9]
+    charDex = info[10]
+    charCon = info[11]
+    hasTaken = info[13]
+    remainingFeats = info[12]
 
     #place all keys within a list for comparison later
 
-    information = charWrite.SaveModule.outputOriginal(self)
+
     featDict = gameFeats.featDict()[0]
     featList = gameFeats.featDict()[1]
  
@@ -70,7 +74,7 @@ def feats():
                 print(playerFeats)
         print("")
         answer = input("Feat> ").lower()
-    return charLevel, remainingFeats, charStr, charDex, charCon, charfeatList
+    return [charLevel, remainingFeats, charStr, charDex, charCon, charfeatList]
 
 #
 #                 # characterFile = {}
