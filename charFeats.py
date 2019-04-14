@@ -1,5 +1,6 @@
 import gameFeats
 import charWrite
+import charCreation
 # import json
 
 """
@@ -21,8 +22,8 @@ def feats():
     # charfeatList = charInfo["player feats"]
 
     #place all keys within a list for comparison later
-    information = charWrite.SaveModule.save(self, basics, abilities)
-    print(information)
+
+    information = charWrite.SaveModule.outputOriginal(self)
     featDict = gameFeats.featDict()[0]
     featList = gameFeats.featDict()[1]
  

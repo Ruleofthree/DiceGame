@@ -46,7 +46,8 @@ class Character(cmd.Cmd):
         selected using the 'feats' option"""
         basics = charCreation.Character.basics()
         abilities = charCreation.Character.abilities(basics)
-        charWrite.SaveModule.save(self, basics, abilities)
+        name = charWrite.SaveModule.outputOriginal(self)
+        print(name)
 
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""
