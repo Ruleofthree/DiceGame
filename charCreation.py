@@ -1,3 +1,5 @@
+import json
+
 '''
 Character Creation.
 '''
@@ -54,6 +56,8 @@ class Character():
         print("Hit Points:                 " + str(levelDict[int(playerLevel)][0]))
         statHP = levelDict[int(playerLevel)][0]
         print("Damage:                     " + str(levelDict[int(playerLevel)][1]) + "d" + str(levelDict[int(playerLevel)][2]))
+        numberOfDice = str(levelDict[int(playerLevel)][1])
+        numberOfSides =  str(levelDict[int(playerLevel)][2])
         print("Ability Points to Allocate: " + str(levelDict[int(playerLevel)][3]))
         statPoints = levelDict[int(playerLevel)][3]
         print("Total Feats:                " + str(levelDict[int(playerLevel)][4]))
@@ -66,27 +70,15 @@ class Character():
         statAC = levelDict[int(playerLevel)][6]
         toNextLevel = (levelDict[int(playerLevel)][7]) - playerXP
         print("You currently have: " + str(playerXP) + " experience and need: " + str(toNextLevel) + " to reach the next level.")
-        return [playerLevel, statHP, statHit, statDamage, statPoints, statFeats, statAC, playerXP, toNextLevel, charName]
+        return [charName, playerLevel, statHP, statHit, statDamage, numberOfDice, numberOfSides, statPoints, statFeats, statAC, playerXP, toNextLevel,]
 
-    '''
-    basics[0] = Level
-    basics[1] = Hit Points
-    basics[2] = To Hit Modifier
-    basics[3] = Damage Modifier
-    basics[4] = Total ability points
-    basics[5] = Total feats
-    basics[6] = Armor Class
-    basics[7] = player current xp
-    basics[8] = xp to next level
-    basics[9] = character name
-    '''
         # This function focuses purely on assigning values to the three primary stats: Strength, Dexterity, and
         # Constitution. While loops are set in place to ensure that no value is placed above 10, or any remaining points
         # they player has left to allocate. Once completed, the information is displayed with their appropriate modifiers
         # and the player is asked if they want to keep their setup, or redistribute.
 
     def abilities(self, basics):
-        statPoints = basics[4]
+        statPoints = basics[7]
         print("You have " + str(statPoints) + " points to distribute between Strength, Dexterity, and Constitution.")
         print("No single stat can be above 10 points")
         answer = "no"
@@ -119,8 +111,71 @@ class Character():
             answer = input("Do you wish to keep these stats? (yes/no)").lower()
         return [strMod, dexMod, conMod, strengthStat, dexterityStat, conStat]
 
-    # Grabs all the necessary information from the above functions, and commits them to a JSON file labeled with their
-    # character name.
+
+    def save(self, basics, abilities):
+
+        '''
+        basics[0]  = Character Name
+        basics[1]  = Level
+        basics[2]  = Hit Points       +          abilities[2] = Constitution Modifier
+        basics[3]  = To Hit Modifier  +          abilities[0] = Strength Modifier
+        basics[3]  = Damage Modifier  +          abilities[0] = Strength Modifier
+        basics[5]  = Number of Dice
+        basics[6]  = Number of Sides
+        basics[7]  = Stat Points
+        basics[8]  = Number of Feats
+        basics[9]  = Armor Class      +          abilities[1] = Dexterity Modifier
+        basics[10] = Player XP
+        basics[11] = XP needed to level
+
+        abilities[3] = Strength
+        abilities[4] = Dexterity
+        abilities[5] = Constitution
+        '''
+        # Create an empty dictionary
+        characterFile = {}
+
+        # Fill the dictionary with required information
+        print(basics)
+        print(abilities)
+        name = basics[0]
+        characterFile["name"] = name
+        level = basics[1]
+        characterFile["level"] = level
+        hp = basics[2] + abilities[2]
+        characterFile["hitpoints"] = hp
+        tFeats = basics[8]
+        characterFile["total feats"] = tFeats
+        hit = basics[3] + abilities[0]
+        numberOfDice = basics[5]
+        numberOfSides = basics[6]
+        characterFile["base damage"] = numberOfDice + "d" + numberOfSides
+        characterFile["hit"] = hit
+        damage = basics[3] + abilities[0]
+        characterFile["damage modifier"] = damage
+        ac = basics[9] + abilities[1]
+        characterFile["ac"] = ac
+        xp = basics[10]
+        characterFile["currentxp"] = xp
+        nextLevel = basics[11]
+        characterFile["nextlevel"] = nextLevel
+        strength = abilities[3]
+        characterFile["strength"] = strength
+        dexterity = abilities[4]
+        characterFile["dexterity"] = dexterity
+        constitution = abilities[5]
+        characterFile["constitution"] = constitution
+
+        # apply a hidden counters, that will keep track of number of feats throughout level progression
+        remainingFeats = 2
+        characterFile["remaining feats"] = remainingFeats
+        hasTaken = []
+        characterFile["feats taken"] = hasTaken
+
+        print("Your character has been saved.")
+        # create the JSON file
+        file = open(name + ".txt", "w", encoding="utf-8")
+        json.dump(characterFile, file, ensure_ascii=False, indent=2)
 
 
 # for testing purposes

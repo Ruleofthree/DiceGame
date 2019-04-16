@@ -44,14 +44,15 @@ class Character(cmd.Cmd):
     def do_create(self, args):
         """Use this command to create a new character. Note you can only have one character per account. Feats are
         selected using the 'feats' option"""
-        basics = charCreation.Character.basics(self)
-        abilities = charCreation.Character.abilities(self, basics)
-        charWrite.SaveModule.__init__(self, basics, abilities)
-
+        charBasics = charCreation.Character()
+        basics = charBasics.basics()
+        abilities = charBasics.abilities(basics)
+        charBasics.save(basics, abilities)
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""
-        info = charWrite.SaveModule.outputOriginal(self)
-        charInfo.charSheet(info)
+        module = charWrite.SaveModule()
+        viewChar = module.save()
+        charInfo.charSheet(viewChar)
 
     def do_quit(self, args):
         """Leaves character Creation"""
@@ -65,10 +66,10 @@ class Feats(cmd.Cmd):
         print("Welcome to Feat Selection. Here you can view the lists of feats for any given category: Strength"
               " Dexterity, Constitution, and. Simply type 'getfeat' to start the process.")
 
-    def do_getfeat(self,args,):
+    def do_getfeat(self,args):
         """Select your feats with this option"""
-        info = charWrite.SaveModule.outputOriginal(self)
-        print(info)
+        module = charWrite.SaveModule()
+        info = module.save()
         charFeats.feats(info)
 
     def do_quit(self, args):

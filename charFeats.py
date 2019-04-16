@@ -9,21 +9,22 @@ character sheet.
 """
 
 def feats(info):
-    
+    print(info)
     charName = info[0]
     charLevel = info[1]
     charHP = info[2]
     charFeats = info[3]
-    charHit = info[4]
-    charDamage = info[5]
-    charAC = info[6]
-    charXP = info[7]
-    nextLevel = info[8]
-    charStr = info[9]
-    charDex = info[10]
-    charCon = info[11]
-    hasTaken = info[13]
-    remainingFeats = info[12]
+    charBaseDamage = info[4]
+    charHit = info[5]
+    charDamage = info[6]
+    charAC = info[7]
+    charXP = info[8]
+    nextLevel = info[9]
+    charStr = info[10]
+    charDex = info[11]
+    charCon = info[12]
+    hasTaken = info[14]
+    remainingFeats = info[13]
 
     #place all keys within a list for comparison later
 
@@ -66,15 +67,15 @@ def feats(info):
                                       and charStr >= reqStr \
                                       and charDex >= reqDex \
                                       and charCon >= reqCon \
-                                      and answer not in charfeatList:
+                                      and answer not in hasTaken:
                     print(answer + " has been added to your character sheet.")
                     remainingFeats = remainingFeats - 1
-                playerFeats = charfeatList
-                playerFeats.append(answer)
-                print(playerFeats)
+                print(hasTaken)
+                hasTaken.append(answer)
+                print(hasTaken)
         print("")
         answer = input("Feat> ").lower()
-    return [charLevel, remainingFeats, charStr, charDex, charCon, charfeatList]
+    return [remainingFeats, hasTaken]
 
 #
 #                 # characterFile = {}

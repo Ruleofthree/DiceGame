@@ -18,22 +18,24 @@ def charSheet(info):
     charLevel = info[1]
     charHP = info[2]
     charFeats = info[3]
-    charHit = info[4]
-    charDamage = info[5]
-    charAC = info[6]
-    charXP = info[7]
-    nextLevel = info[8]
-    charStr = info[9]
-    charDex = info[10]
-    charCon = info[11]
-    hasTaken = info[13]
-    remainingFeats = info[12]
+    charBaseDamage = info[4]
+    charHit = info[5]
+    charDamage = info[6]
+    charAC = info[7]
+    charXP = info[8]
+    nextLevel = info[9]
+    charStr = info[10]
+    charDex = info[11]
+    charCon = info[12]
+    remainingFeats = info[13]
+    hasTaken = info[14]
 
     print("Character Name:     " + charName)
     print("Level:              " + str(charLevel) + "       Strength:     " + str(charStr))
     print("Hit Points:         " + str(charHP) + "      Dexterity:    " + str(charDex))
     print("To Hit Modifier:    " + str(charHit) + "       Constitution: " + str(charCon))
-    print("Total Feats:        " + str(charFeats))
+    print("Base Damage:        " + charBaseDamage)
+    print("Total Feats:        " + str(remainingFeats))
     print("Damage Modifier:    " + str(charDamage))
     print("Armor Class:        " + str(charAC))
     print("Current XP:         " + str(charXP))

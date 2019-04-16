@@ -1,66 +1,78 @@
 import json
 import charInfo
 
+
 class SaveModule:
 
-    def __init__(self, basics, abilities):
-        self.name = basics[9]
-        self.level = basics[0]
-        self.hp = basics[1] + abilities[2]
-        self.tFeats = basics[5]
-        self.hit = basics[2] + abilities[0]
-        self.damage = basics[3] + abilities[0]
-        self.ac = basics[6] + abilities[1]
-        self.xp = basics[7]
-        self.nextLevel = basics[8]
-        self.strength = abilities[0]
-        self.dexterity = abilities[1]
-        self.constitution = abilities[2]
+    #                 # # basics[0] = Level
+    #                 # # basics[1] = Hit Points                  abilities[2] = Hit Point Modifier
+    #                 # # basics[2] = To Hit                      abilities[0] = To Hit Modifier
+    #                 # # basics[3] = Damage                      abilities[0] = Damage Modifier
+    #                 # # basics[4] = Total ability points
+    #                 # # basics[5] = Total feats
+    #                 # # basics[6] = Armor Class                 abilities[1] = Armor Class Modifier
+    #                 # # basics[7] = player current xp
+    #                 # # basics[8] = xp to next level
+    #                 # # basics[9] = character
+
+    def __init__(self):
+
+        charFile = open("Irixis.txt", "r", encoding="utf-8")
+        charStats = json.load(charFile)
+        charFile.close()
+        self.name = charStats['name']
+        self.level = charStats['level']
+        self.hp = charStats['hitpoints']
+        self.tFeats = charStats['total feats']
+        self.baseDamage = charStats['base damage']
+        self.hit = charStats['hit']
+        self.damage = charStats['damage modifier']
+        self.ac = charStats['ac']
+        self.xp = charStats['currentxp']
+        self.nextLevel = charStats['nextlevel']
+        self.strength = charStats['strength']
+        self.dexterity = charStats['dexterity']
+        self.constitution = charStats['constitution']
+        self.remainingFeats = charStats['remaining feats']
+        self.hasTaken = charStats['feats taken']
 
 
-    def outputOriginal(self):
-
-        # Create an empty dictionary
-        characterFile = {}
-
-        # Fill the dictionary with required information
-
+    def save(self):
         name = self.name
-        characterFile["name"] = name
         level = self.level
-        characterFile["level"] = level
         hp = self.hp
-        characterFile["hitpoints"] = hp
         tFeats = self.tFeats
-        characterFile["total feats"] = tFeats
+        baseDamage = self.baseDamage
         hit = self.hit
-        characterFile["hit"] = hit
         damage = self.damage
-        characterFile["damage"] = damage
         ac = self.ac
-        characterFile["ac"] = ac
         xp = self.xp
-        characterFile["currentxp"] = xp
-        nextLevel = self.level
-        characterFile["nextlevel"] = nextLevel
+        nextLevel = self.nextLevel
         strength = self.strength
-        characterFile["strength"] = strength
         dexterity = self.dexterity
-        characterFile["dexterity"] = dexterity
         constitution = self.constitution
-        characterFile["constitution"] = constitution
+        remainingFeats = self.remainingFeats
+        hasTaken = self.hasTaken
 
-        # apply a hidden counters, that will keep track of number of feats throughout level progression
-        characterFile["remaining feats"] = 2
-        remainingFeats = 2
-        hasTaken = 0
+        info = []
 
-        print("Your character has been saved.")
-        # create the JSON file
-        file = open(name + ".txt", "w", encoding="utf-8")
-        json.dump(characterFile, file, ensure_ascii=False, indent=2)
-        return [name, level, hp, tFeats, hit, damage, ac, xp, nextLevel, strength, dexterity, constitution, remainingFeats, hasTaken]
+        info.append(name)
+        info.append(level)
+        info.append(hp)
+        info.append(tFeats)
+        info.append(baseDamage)
+        info.append(hit)
+        info.append(damage)
+        info.append(ac)
+        info.append(xp)
+        info.append(nextLevel)
+        info.append(strength)
+        info.append(dexterity)
+        info.append(constitution)
+        info.append(remainingFeats)
+        info.append(hasTaken)
 
+        return info
 
 
 # def update(updateChar):
