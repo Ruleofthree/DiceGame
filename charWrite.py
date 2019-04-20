@@ -1,5 +1,5 @@
 import json
-import charInfo
+import gameFeats
 
 
 class SaveModule:
@@ -73,6 +73,97 @@ class SaveModule:
         info.append(hasTaken)
 
         return info
+
+    def charSheet(self):
+
+        featDict = gameFeats.featDict()[0]
+        featList = gameFeats.featDict()[1]
+
+        charName = self.name
+        charLevel = self.level
+        charHP = self.hp
+        charFeats = self.tFeats
+        charBaseDamage = self.baseDamage
+        charHit = self.hit
+        charDamage = self.damage
+        charAC = self.ac
+        charXP = self.xp
+        nextLevel = self.nextLevel
+        charStr = self.strength
+        charDex = self.dexterity
+        charCon = self.constitution
+        remainingFeats = self.remainingFeats
+        hasTaken = self.hasTaken
+
+        for word in hasTaken:
+            if word == "dexterous fighter":
+                dexMod = int(charDex / 2)
+                levelMod = int(1 + (charLevel / 2))
+                charHit = dexMod + levelMod
+
+            if word == "crushing blow":
+                damageMod = 1
+                charDamage = charDamage + damageMod
+            elif word == "improved crushing blow":
+                damageMod = 3
+                charDamage = charDamage + damageMod
+            elif word == "greater crushing blow":
+                damageMod = 5
+                charDamage = charDamage + damageMod
+            else:
+                pass
+
+            if word == "precision strike":
+                hitMod = 1
+                charHit = charHit + hitMod
+            elif word == "improved precision strike":
+                hitMod = 3
+                charHit = charHit + hitMod
+            elif word == "greater precision strike":
+                hitMod = 5
+                charHit = charHit + hitMod
+            else:
+                pass
+
+            if word == "lightning reflexes":
+                acMod = 1
+                charAC = charAC + acMod
+            elif word == "improved lightning reflexes":
+                acMod = 3
+                charAC = charAC + acMod
+            elif word == "greater lightning reflexes":
+                acMod = 5
+                charAC = charAC + acMod
+            else:
+                pass
+
+        print("Character Name:     " + charName)
+        print("Level:              " + str(charLevel) + "       Strength:     " + str(charStr))
+        print("Hit Points:         " + str(charHP) + "      Dexterity:    " + str(charDex))
+        print("To Hit Modifier:    " + str(charHit) + "       Constitution: " + str(charCon))
+        print("Base Damage:        " + charBaseDamage)
+        print("Total Feats:        " + str(charFeats))
+        print("Damage Modifier:    " + str(charDamage))
+        print("Armor Class:        " + str(charAC))
+        print("Current XP:         " + str(charXP))
+        print("XP needed to level: " + str(nextLevel))
+
+        print("Available feats:    " + str(remainingFeats))
+
+        if not hasTaken:
+            print("")
+            print("No feats taken yet.")
+            print("")
+        else:
+            print("")
+            print(charName + "'s feats:")
+            print("")
+
+            for word in hasTaken:
+                pos = hasTaken.index(word)
+                print(hasTaken[pos] + ": ")
+                print(featDict[0][hasTaken[pos]]['desc'])
+                print("")
 
 
 # def update(updateChar):

@@ -2,7 +2,6 @@
 
 import cmd
 import charCreation
-import charInfo
 import charFeats
 import charWrite
 
@@ -48,11 +47,11 @@ class Character(cmd.Cmd):
         basics = charBasics.basics()
         abilities = charBasics.abilities(basics)
         charBasics.save(basics, abilities)
+
     def do_viewchar(self, args):
         """Use this command to get a list of your character statics"""
         module = charWrite.SaveModule()
-        viewChar = module.save()
-        charInfo.charSheet(viewChar)
+        module.charSheet()
 
     def do_quit(self, args):
         """Leaves character Creation"""
@@ -66,11 +65,12 @@ class Feats(cmd.Cmd):
         print("Welcome to Feat Selection. Here you can view the lists of feats for any given category: Strength"
               " Dexterity, Constitution, and. Simply type 'getfeat' to start the process.")
 
-    def do_getfeat(self,args):
+    def do_getfeat(self,args,):
         """Select your feats with this option"""
         module = charWrite.SaveModule()
         info = module.save()
-        charFeats.feats(info)
+        getFeats = charFeats.Feats()
+        getFeats.playerFeats(info)
 
     def do_quit(self, args):
         """Leaves Feat Selection"""

@@ -23,7 +23,7 @@ Element = value
 Strictly speaking, this script only needs the first key in the levelDict. However, the entire dictionary is placed here
 if needed later.
 '''
-class Character():
+class Character:
 
     def basics(self):
         levelDict = {1: [ 25,  1,   6,   15,   2,  1,  5,   30],
@@ -51,7 +51,7 @@ class Character():
         playerLevel = 1
         playerXP = 0
         # Grabs character's name, and then assigns appropriate values from the dictionary above to display.
-        charName = input("What is your characters name? ")
+        charName = input("What is your characters name? ").lower()
         print("Your character's name is " + charName + ", and will start out at level one with the following stats:")
         print("Hit Points:                 " + str(levelDict[int(playerLevel)][0]))
         statHP = levelDict[int(playerLevel)][0]
@@ -84,6 +84,7 @@ class Character():
         answer = "no"
         while answer == "no":
             strengthStat = input("How many points do you want to put in Strength? ")
+            strengthStat = int(strengthStat)
             while int(strengthStat) > 10:
                 print("You can not allocate more than 10 points in any stat.")
                 strengthStat = input("How many points do you want to put in Strength? ")
@@ -91,6 +92,7 @@ class Character():
             print("You have put " + str(strengthStat) + " points in Strength, and have " + str(remaining) + " points left.")
 
             dexterityStat = input("How many points do you want to put in Dexterity?")
+            dexterityStat = int(dexterityStat)
             while int(dexterityStat) > remaining:
                 print("You only have " + str(remaining) + " points left")
                 dexterityStat = input("How many points do you want to put in Dexterity?")
@@ -98,6 +100,7 @@ class Character():
             print("You have put " + str(dexterityStat) + " points in Dexterity, and have " + str(remaining) + " points left")
 
             conStat = input("How many points do you want to put in Constitution?")
+            conStat = int(conStat)
             while int(conStat) > remaining:
                 print("You only have " + str(remaining) + " points left")
                 conStat = input("How many points do you want to put in Constitution?")
@@ -136,8 +139,6 @@ class Character():
         characterFile = {}
 
         # Fill the dictionary with required information
-        print(basics)
-        print(abilities)
         name = basics[0]
         characterFile["name"] = name
         level = basics[1]

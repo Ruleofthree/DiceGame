@@ -9,7 +9,7 @@
     "crushing blow": {
       "stat": "strength",
       "desc": "adds +1 to your damage modifier",
-      "requirements": [ 3, 5, 0, 0, "none"],
+      "requirements": [ 1, 5, 0, 0, "none"],
       "status": "active"
     },
     "improved crushing blow": {
@@ -21,13 +21,13 @@
     "greater crushing blow": {
       "stat": "strength",
       "desc": "improves the bonus of crushing blow to +5 to damage",
-      "requirements": [7, 9, 0, 0,"improved crushing blow"],
+      "requirements": [9, 9, 0, 0,"improved crushing blow"],
       "status": "active"
     },
     "titan's blow": {
       "stat": "strength",
       "desc": "Your next attack deals 50% more damage, can only be used once per fight.",
-      "requirements": [15, 10, 0, 0, "greater crushing blow"],
+      "requirements": [13, 10, 0, 0, "greater crushing blow"],
       "status": "active"
     },
     "combat expertise": {
@@ -39,25 +39,25 @@
     "precision strike": {
       "stat": "strength",
       "desc": "adds +1 to your hit modifier",
-      "requirements": [3, 4, 3, 0, "none"],
+      "requirements": [1, 4, 3, 0, "none"],
       "status": "active"
     },
     "improved precision strike": {
       "stat": "strength",
       "desc": "improves the bonus of precision strike to +3 to hit.",
-      "requirements": [5, 5, 3, 0, "precision strike"],
+      "requirements": [5, 5, 5, 0, "precision strike"],
       "status": "active"
     },
     "greater precision strike": {
       "stat": "strength",
       "desc": "improves the bonus of precision strike to +5 to hit",
-      "requirements": [7, 6, 3, 0, "improved precision strike"],
+      "requirements": [9, 6, 7, 0, "improved precision strike"],
       "status": "active"
     },
     "true strike": {
       "stat": "strength",
       "desc": "Allows you to attack with absolute precision, forgoing any attack roll, but doing 50% less damage",
-      "requirements": [15, 10, 0, 0, "greater precision strike"],
+      "requirements": [13, 10, 0, 0, "greater precision strike"],
       "status": "active"
     },
     "crippling blow": {
@@ -69,19 +69,19 @@
     "improved crippling blow": {
       "stat": "strength",
       "desc": "improves crippling blow to -3 to their next attack.",
-      "requirements": [5, 8, 5, 0, "crippling blow"],
+      "requirements": [7, 8, 5, 0, "crippling blow"],
       "status": "active"
     },
     "greater crippling blow": {
       "stat": "strength",
       "desc": "improves crippling blow to -5 to their next attack.",
-      "requirements": [7, 9, 6, 0, "improved crippling blow"],
+      "requirements": [9, 9, 6, 0, "improved crippling blow"],
       "status": "active"
     },
     "staggering blow": {
       "stat": "strength",
       "desc": "Apply no modifier to damage, but a successful hit will make the opponents next attack deal 50% less damage",
-      "requirements": [15, 10, 7, 0, "greater crippling blow"],
+      "requirements": [13, 10, 7, 0, "greater crippling blow"],
       "status": "active"
     },
     "defensive fighting": {
@@ -99,13 +99,13 @@
     "improved evasion": {
       "stat": "dexterity",
       "desc": "improves damage reduction to 50%",
-      "requirements": [ 5, 0, 7, 0, "evasion"],
+      "requirements": [9, 0, 7, 0, "evasion"],
       "status": "active"
     },
     "greater evasion": {
       "stat": "dexterity",
       "desc": "improves damage taken by 100%",
-      "requirements": [7, 0, 9, 0, "greater evasion"],
+      "requirements": [15, 0, 9, 0, "improved evasion"],
       "status": "active"
     },
     "dexterous fighter": {
@@ -123,37 +123,37 @@
     "improved quick strike": {
       "stat": "dexterity",
       "desc": "improves strike to 30% of total damage.",
-      "requirements": [7, 0, 7, 0, "quick strike"],
+      "requirements": [9, 0, 7, 0, "quick strike"],
       "status": "active"
     },
     "greater quick strike": {
       "stat": "dexterity",
       "desc": "improves quick strike to 50% total damage.",
-      "requirements": [9, 0, 8, 0, "improved quick strike"],
+      "requirements": [13, 0, 9, 0, "improved quick strike"],
       "status": "active"
     },
     "riposte": {
       "stat": "dexterity",
       "desc": "If opponent misses attack, you gain a +5 bonus to hit on your next attack.",
-      "requirements": [13, 0, 10, 0, "greater quick strike"],
+      "requirements": [15, 0, 10, 0, "greater quick strike"],
       "status": "active"
     },
     "deflect": {
       "stat": "dexterity",
       "desc": "Roll damage immediately after opponent. If your damage is higher, you only take 90% of total damage",
-      "requirements": [1, 0, 3, 0, "none"],
+      "requirements": [5, 0, 5, 0, "none"],
       "status": "active"
     },
     "improved deflect": {
       "stat": "dexterity",
       "desc": "Roll damage immediately after opponent. If your damage is higher, you only take 80% of total damage",
-      "requirements": [5, 0, 5, 0, "deflect"],
+      "requirements": [7, 0, 7, 0, "deflect"],
       "status": "active"
     },
     "greater deflect": {
       "stat": "dexterity",
       "desc": "Roll damage immediately after opponent. If your damage is higher, you only take 70% of total damage",
-      "requirements": [7, 0, 7, 0, "great deflect"],
+      "requirements": [9, 0, 9, 0, "great deflect"],
       "status": "active"
     },
     "lightning reflexes": {
@@ -164,39 +164,39 @@
     },
     "improved lightning reflexes": {
       "stat": "dexterity",
-      "desc": "increases lightning reflexes bonus to +2",
-      "requirements": [3, 0, 5, 0, "lightning reflexes"],
+      "desc": "increases lightning reflexes bonus to +3",
+      "requirements": [5, 0, 5, 0, "lightning reflexes"],
       "status": "passive"
     },
     "greater lightning reflexes": {
       "stat": "dexterity",
-      "desc": "increases lightning reflexes bonus to +3",
-      "requirements": [5, 0, 7, 0, "improved lightning reflexes"],
+      "desc": "increases lightning reflexes bonus to +5",
+      "requirements": [7, 0, 7, 0, "improved lightning reflexes"],
       "status": "passive"
     },
     "hurt me": {
       "stat": "constitution",
       "desc": "gives +1 to damage for every 25% of hit points lost",
-      "requirements": [2, 0, 0, 4, "none"],
+      "requirements": [5, 0, 0, 4, "none"],
       "status": "passive"
     },
     "improved hurt me": {
       "stat": "constitution",
       "desc": "increases hurt me bonus to +2",
-      "requirements": [5, 0, 0, 6, "hurt me"],
+      "requirements": [10, 0, 0, 6, "hurt me"],
       "status": "passive"
     },
     "greater hurt me": {
       "stat": "constitution",
       "desc": "increases hurt me bonus to +3",
-      "requirements": [10, 0, 8, 0, "improved hurt me"],
+      "requirements": [15, 0, 8, 0, "improved hurt me"],
       "status": "passive"
     },
     "hurt me more": {
       "stat": "constitution",
       "name": "hurt me more",
       "desc": "applies the +3 bonus for every 20% lost",
-      "requirements": [15, 0, 10, 0, "greater hurt me"],
+      "requirements": [20, 0, 10, 0, "greater hurt me"],
       "status": "passive"
     },
 
@@ -231,21 +231,21 @@
     "endurance": {
       "stat": "constitution",
       "desc": "Grants a +5 bonus to Hit Points.",
-      "requirements": [3, 0, 0, 3, "none"],
+      "requirements": [1, 0, 0, 3, "none"],
       "status": "passive"
     },
 
     "improved endurance": {
      "stat": "constitution",
      "desc": "improves the bonus to +15.",
-     "requirements": [6, 0, 0, 5, "endurance"],
+     "requirements": [5, 0, 0, 5, "endurance"],
      "status": "passive"
     },
 
     "greater endurance": {
      "stat": "constitution",
      "desc": "improves the bonus to +30.",
-     "requirements": [9, 0, 0, 7, "improved endurance"],
+     "requirements": [7, 0, 0, 7, "improved endurance"],
      "status": "passive"
     }
   }
