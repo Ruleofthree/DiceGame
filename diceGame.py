@@ -1,5 +1,3 @@
-# Adam A. www.upwork.com
-
 import cmd
 import charCreation
 import charFeats
@@ -14,16 +12,19 @@ class Hub(cmd.Cmd):
               " please type help <command>.")
 
     def  do_char(self, args):
-        """this command will give you access to the 'create' command, to create your character for this account. It
-will also give you access to the 'viewchar' command, which will provide you with a basic character sheet
-containing all needed information"""
+        """
+        this command will give you access to the 'create' command, to create your character for this account. It
+        will also give you access to the 'viewchar' command, which will provide you with a basic character sheet
+        containing all needed information
+        """
         character = Character()
         character.cmdloop()
 
     def do_feats(self, args):
-        """this command will give you access to the commands to look at all feats in the game and their descriptions
-and any required qualifications that are needed before taking the feat. Feats are divided into three catagories:
-Strength, Dexterity, and Constition.
+        """
+        this command will give you access to the commands to look at all feats in the game and their descriptions
+        and any required qualifications that are needed before taking the feat. Feats are divided into three categories:
+        Strength, Dexterity, and Constitution.
         """
         feats = Feats()
         feats.cmdloop()
@@ -41,20 +42,26 @@ class Character(cmd.Cmd):
               " their descriptions, type 'help'")
 
     def do_create(self, args):
-        """Use this command to create a new character. Note you can only have one character per account. Feats are
-        selected using the 'feats' option"""
+        """
+        Use this command to create a new character. Note you can only have one character per account. Feats are
+        selected using the 'feats' option
+        """
         charBasics = charCreation.Character()
         basics = charBasics.basics()
         abilities = charBasics.abilities(basics)
         charBasics.save(basics, abilities)
 
     def do_viewchar(self, args):
-        """Use this command to get a list of your character statics"""
+        """
+        Use this command to get a list of your character statics
+        """
         module = charWrite.SaveModule()
         module.charSheet()
 
     def do_quit(self, args):
-        """Leaves character Creation"""
+        """
+        Leaves character Creation
+        """
         print("Closing Character Creation.")
         return True
 

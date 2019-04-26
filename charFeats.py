@@ -66,37 +66,94 @@ class Feats:
                     print("You have no feat slots left to select a new feat.")
                 else:
                     answer = answer[5:]
-                    level = featDict[0][answer]['requirements'][0]
-                    reqStr = featDict[0][answer]['requirements'][1]
-                    reqDex = featDict[0][answer]['requirements'][2]
-                    reqCon = featDict[0][answer]['requirements'][3]
-                    reqFeats = featDict[0][answer]['requirements'][4]
-
                     if answer not in featList:
                         print("Make sure you have spelled the feat correctly.")
-                    elif level > charLevel:
-                        print("You are not the required level for this feat")
-                    elif reqStr > charStr:
-                        print("You do not have the required strength for this feat")
-                    elif reqDex > charDex:
-                        print("You do not have the required dexterity for this feat")
-                    elif reqCon > charCon:
-                        print("You do not have the required constitution for this feat")
-                    elif answer not in hasTaken:
-                        print(answer + " has been added to your character sheet.")
-                        remainingFeats = remainingFeats - 1
-                        print(remainingFeats)
-                        hasTaken.append(answer)
-                        with open(charName + '.txt', 'r+') as file:
-                                    json_data = json.load(file)
-                                    json_data['feats taken'] = hasTaken
-                                    json_data['remaining feats'] = remainingFeats
-                                    file.seek(0)
-                                    file.write(json.dumps(json_data, ensure_ascii=False, indent=2))
-                                    file.truncate()
                     else:
-                        print("You have already taken this feat.")
-            print("")
+                        level = featDict[0][answer]['requirements'][0]
+                        reqStr = featDict[0][answer]['requirements'][1]
+                        reqDex = featDict[0][answer]['requirements'][2]
+                        reqCon = featDict[0][answer]['requirements'][3]
+                        reqFeats = featDict[0][answer]['requirements'][4]
+                        print(reqCon)
+                        print(charCon)
+                        if level > charLevel:
+                            print("You are not the required level for this feat")
+                        elif reqStr > charStr:
+                            print("You do not have the required strength for this feat")
+                        elif reqDex > charDex:
+                            print("You do not have the required dexterity for this feat")
+                        elif reqCon > charCon:
+                            print("You do not have the required constitution for this feat")
+                        elif reqFeats not in hasTaken and reqFeats != "none":
+                            print("You do not have the required prerequisites to take this feat")
+                        elif answer not in hasTaken:
+                            print(answer + " has been added to your character sheet.")
+                            remainingFeats = remainingFeats - 1
+                            print(remainingFeats)
+                            hasTaken.append(answer)
+                            if answer == "dexterous fighter":
+                                dexMod = int(charDex / 2)
+                                strMod = int(charStr / 2)
+                                charHit = charHit + dexMod - strMod
+
+                            if answer == "crushing blow":
+                                damageMod = 1
+                                charDamage = charDamage + damageMod
+                            if answer == "improved crushing blow":
+                                damageMod = 3
+                                charDamage = charDamage + damageMod
+                            if answer == "greater crushing blow":
+                                damageMod = 5
+                                charDamage = charDamage + damageMod
+
+                            if answer == "precision strike":
+                                hitMod = 1
+                                charHit = charHit + hitMod
+                            if answer == "improved precision strike":
+                                hitMod = 3
+                                charHit = charHit + hitMod
+                            if answer == "greater precision strike":
+                                hitMod = 5
+                                charHit = charHit + hitMod
+
+                            if answer == "lightning reflexes":
+                                acMod = 1
+                                charAC = charAC + acMod
+                            if answer == "improved lightning reflexes":
+                                acMod = 3
+                                charAC = charAC + acMod
+                            if answer == "greater lightning reflexes":
+                                acMod = 5
+                                charAC = charAC + acMod
+
+                            if answer == "endurance":
+                                hpMod = 5
+                                charHP = charHP + hpMod
+                            if answer == "improved endurance":
+                                hpMod = 15
+                                charHP = charHP + hpMod
+                            if answer == "greater endurance":
+                                hpMod = 30
+                                charHP = charHP + hpMod
+
+                            with open(charName + '.txt', 'r+') as file:
+                                        json_data = json.load(file)
+                                        json_data['hitpoints'] = charHP
+                                        json_data['ac'] = charAC
+                                        json_data['hit'] = charHit
+                                        json_data['damage modifier'] = charDamage
+                                        json_data['feats taken'] = hasTaken
+                                        json_data['remaining feats'] = remainingFeats
+                                        file.seek(0)
+                                        file.write(json.dumps(json_data, ensure_ascii=False, indent=2))
+                                        file.truncate()
+                                        file.close()
+                        else:
+                            print("You have already taken this feat.")
+            print("For a list of all the available feats, type 'list'")
+            print("For information on a specific feat, type 'help <feat>'")
+            print("To choose a specific feat, type 'pick <feat>'")
+            print("Type 'back' to go back")
             answer = input("Feat> ").lower()
 
 
@@ -136,3 +193,56 @@ class Feats:
 #                 # file = open(charName + ".txt", "w", encoding="utf-8")
 #                 # json.dump(characterFile, file, ensure_ascii=False, indent=2)
 
+# for word in hasTaken:
+#     if word == "dexterous fighter":
+#         dexMod = int(charDex / 2)
+#         strMod = int(charStr / 2)
+#         charHit = charHit + dexMod - strMod
+#
+#     if word == "crushing blow":
+#         damageMod = 1
+#         charDamage = charDamage + damageMod
+#     elif word == "improved crushing blow":
+#         damageMod = 3
+#         charDamage = charDamage + damageMod
+#     elif word == "greater crushing blow":
+#         damageMod = 5
+#         charDamage = charDamage + damageMod
+#     else:
+#         pass
+#
+#     if word == "precision strike":
+#         hitMod = 1
+#         charHit = charHit + hitMod
+#     elif word == "improved precision strike":
+#         hitMod = 3
+#         charHit = charHit + hitMod
+#     elif word == "greater precision strike":
+#         hitMod = 5
+#         charHit = charHit + hitMod
+#     else:
+#         pass
+#
+#     if word == "lightning reflexes":
+#         acMod = 1
+#         charAC = charAC + acMod
+#     elif word == "improved lightning reflexes":
+#         acMod = 3
+#         charAC = charAC + acMod
+#     elif word == "greater lightning reflexes":
+#         acMod = 5
+#         charAC = charAC + acMod
+#     else:
+#         pass
+#
+#     if word == "endurance":
+#         hpMod = 5
+#         charHP = charHP + hpMod
+#     elif word == "improved endurance":
+#         hpMod = 15
+#         charHP = charHP + hpMod
+#     elif word == "greater endurance":
+#         hpMod = 30
+#         charHP = charHP + hpMod
+#     else:
+#         pass

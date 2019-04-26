@@ -137,6 +137,18 @@ class SaveModule:
             else:
                 pass
 
+            if word == "endurance":
+                hpMod = 5
+                charHP = charHP + hpMod
+            elif word == "improved endurance":
+                hpMod = 15
+                charHP = charHP + hpMod
+            elif word == "greater endurance":
+                hpMod = 30
+                charHP == charHP + hpMod
+            else:
+                pass
+
         print("Character Name:     " + charName)
         print("Level:              " + str(charLevel) + "       Strength:     " + str(charStr))
         print("Hit Points:         " + str(charHP) + "      Dexterity:    " + str(charDex))
