@@ -137,15 +137,15 @@ class Feats:
                                 charHP = charHP + hpMod
 
                             with open(charName + '.txt', 'r+') as file:
-                                        json_data = json.load(file)
-                                        json_data['hitpoints'] = charHP
-                                        json_data['ac'] = charAC
-                                        json_data['hit'] = charHit
-                                        json_data['damage modifier'] = charDamage
-                                        json_data['feats taken'] = hasTaken
-                                        json_data['remaining feats'] = remainingFeats
+                                        jsonData = json.load(file)
+                                        jsonData['hitpoints'] = charHP
+                                        jsonData['ac'] = charAC
+                                        jsonData['hit'] = charHit
+                                        jsonData['damage modifier'] = charDamage
+                                        jsonData['feats taken'] = hasTaken
+                                        jsonData['remaining feats'] = remainingFeats
                                         file.seek(0)
-                                        file.write(json.dumps(json_data, ensure_ascii=False, indent=2))
+                                        file.write(json.dumps(jsonData, ensure_ascii=False, indent=2))
                                         file.truncate()
                                         file.close()
                         else:
