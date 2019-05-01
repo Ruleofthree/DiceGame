@@ -2,6 +2,7 @@ import cmd
 import charCreation
 import charFeats
 import charWrite
+import gameCombat
 
 class Hub(cmd.Cmd):
     def __init__(self):
@@ -10,6 +11,13 @@ class Hub(cmd.Cmd):
         print("Welcome to the Hub. From here, you can create your first character and view the character sheet with the"
               " 'char' command, or review and select feats with the 'feats' command. For more information on both,"
               " please type help <command>.")
+
+    def do_fight(self, args):
+        """
+        This command will initiate combat between two opponents.
+        """
+        combat = gameCombat.Combat()
+        combat.initiative()
 
     def  do_char(self, args):
         """

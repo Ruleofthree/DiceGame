@@ -1,12 +1,18 @@
 import json
 import random
-class Game:
+
+class Combat:
 
     def __init__(self):
         self.pOneInfo = {}
         self.pTwoInfo = {}
+        self.count = 0
         self.token = 0
-        self.damage = 0 initiative
+        self.damage = 0
+        self.pOneTotalHP = 0
+        self.pTwoTotalHP = 0
+        self.pOneCurrentHP = 0
+        self.pTwoCurrentHP = 0
 
     def initiative(self):
         playerOne = input("Who is the challenger? ")
@@ -19,6 +25,10 @@ class Game:
         pTwoInfo = json.load(charFile)
         charFile.close()
         self.pTwoInfo = pTwoInfo
+        self.pOneTotalHP = pOneInfo['hitpoints']
+        self.pTwoTotalHP = pTwoInfo['hitpoints']
+        self.pOneCurrentHP = pOneInfo['hitpoints']
+        self.pTwoCurrentHP = pTwoInfo['hitpoints']
         playerOneInit = random.randint(1, 20)
         playerOneMod = int(pOneInfo['dexterity'] / 2)
         totalOne = playerOneInit + playerOneMod
@@ -68,61 +78,79 @@ class Game:
                     self.token = token
                     # self.determineHitPTwo()
 
-    def getHitPointsPOne(self):
-        # print(self.pOneInfo)
-        pOneTotalHP = self.pOneInfo['hitpoints']
-        pOneCurrentHP = self.pOneInfo['hitpoints']
-        pOneCurrentHP = pOneCurrentHP - self.damage
-        print("Player one: " + str(pOneCurrentHP) + "/" + str(pOneTotalHP))
-
-    def getHitPointsPTwo(self):
-        pTwoTotalHP = self.pOneInfo['hitpoints']
-        pTwoCurrentHP = self.pTwoInfo['hitpoints']
-        pTwoCurrentHP = pTwoCurrentHP - self.damage
-        print("Player two: " + str(pTwoCurrentHP) + "/" + str(pTwoTotalHP))
-
     def determineHitPOne(self):
         pOneToHit = self.pOneInfo['hit']
         pTwoAC = self.pTwoInfo['ac']
         hit = random.randint(1, 20) + pOneToHit
         if hit > pTwoAC:
-            print("Player one rolled a " + str(hit) + " to hit an AC " + str(pTwoAC) + " and was successful.")
+            print("Player One rolled a " + str(hit) + " to hit an AC " + str(pTwoAC) + " and was successful.")
             self.determineDamagePOne()
         else:
-            print("Player one rolled a " + str(hit) + " to hit an AC " + str(pTwoAC) + " and missed.")
-            self.test()
+            print("Player One rolled a " + str(hit) + " to hit an AC " + str(pTwoAC) + " and missed.")
+            self.scoreboard()
 
     def determineHitPTwo(self):
         pTwoToHit = self.pTwoInfo['hit']
         pOneAC = self.pOneInfo['ac']
         hit = random.randint(1, 20) + pTwoToHit
         if hit > pOneAC:
-            print("Player one rolled a " + str(hit) + " to hit an AC " + str(pOneAC) + " and was successful.")
-            self.determineDamagePOne()
+            print("Player Two rolled a " + str(hit) + " to hit an AC " + str(pOneAC) + " and was successful.")
+            self.determineDamagePTwo()
         else:
-            print("Player one rolled a " + str(hit) + " to hit an AC " + str(pOneAC) + " and missed.")
-            self.test()
+            print("Player Two rolled a " + str(hit) + " to hit an AC " + str(pOneAC) + " and missed.")
+            self.scoreboard()
 
     def determineDamagePOne(self):
         pOneBaseDamage = self.pOneInfo['base damage']
         pOneModifier = self.pOneInfo['damage modifier']
         pOneMinimum, pOneMaximum = pOneBaseDamage.split('d')
         self.damage = random.randint(int(pOneMinimum), int(pOneMaximum)) + pOneModifier
-        print("Player one did " + str(self.damage) + " points of damage.")
+        print("Player One did " + str(self.damage) + " points of damage.")
+        self.getHitPointsPTwo()
 
     def determineDamagePTwo(self):
-        print(self.pTwoInfo)
         pTwoBaseDamage = self.pTwoInfo['base damage']
         pTwoModifier = self.pTwoInfo['damage modifier']
         pTwoMinimum, pTwoMaximum = pTwoBaseDamage.split('d')
         self.damage = random.randint(int(pTwoMinimum), int(pTwoMaximum)) + pTwoModifier
-        print("player two did " + str(self.damage) + " points of damage.")
+        print("player Two did " + str(self.damage) + " points of damage.")
+        self.getHitPointsPOne()
 
-    def test(self):
-        print("Am I here?")
+    def getHitPointsPOne(self):
+        self.pOneCurrentHP = self.pOneCurrentHP - self.damage
+        self.token = 2
+        self.scoreboard()
 
-game = Game()
-game.initative()
+    def getHitPointsPTwo(self):
+        self.pTwoCurrentHP = self.pTwoCurrentHP - self.damage
+        self.token = 1
+        self.scoreboard()
+
+    def scoreboard(self):
+        print("Player One: " + str(self.pOneCurrentHP) + "/" + str(self.pOneTotalHP) + "  ||  " + "Player Two: " + str(self.pTwoCurrentHP) + "/" + str(self.pTwoTotalHP))
+        answer = input("Am I here? ").lower()
+        if answer == "yes":
+            self.combatRounds()
+        else:
+            return
+
+    def combatRounds(self):
+        print(self.pOneCurrentHP)
+        print(self.pTwoCurrentHP)
+        if self.pOneCurrentHP >= 0 and self.pTwoCurrentHP >= 0:
+            if self.token == 1:
+                self.count += 1
+                self.determineHitPTwo()
+            elif self.token == 2:
+                self.count += 1
+                self.determineHitPOne()
+        elif self.pOneCurrentHP <= 0:
+            print("Player Two Won in " + str(int(self.count / 2)) + " rounds")
+        elif self.pTwoCurrentHP <= 0:
+            print("player One Won in " + str(int(self.count / 2)) + " rounds")
+
+# combat = Combat()
+# combat.initiative()
 
 
 

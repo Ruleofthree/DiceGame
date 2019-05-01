@@ -1,29 +1,38 @@
 import json
 
+x = 10
+y = 5
 
-class Person:
+while x > 0 and y > 0:
+    x = x - 1
+    y = y - 1
+    print(x)
+    print(y)
+print("done")
 
-    def __init__(self, first, last):
-        self.firstname = first
-        self.lastname = last
-
-    def Name(self):
-        return self.firstname + " " + self.lastname
-
-class Employee(Person):
-
-    def __init__(self, first, last, staffnum):
-        Person.__init__(self,first, last)
-        self.staffnumber = staffnum
-
-    def GetEmployee(self):
-        return self.Name() + ", " +  self.staffnumber
-
-x = Person("Marge", "Simpson")
-y = Employee("Homer", "Simpson", "1007")
-
-print(x.Name())
-print(y.GetEmployee())
+# class Person:
+#
+#     def __init__(self, first, last):
+#         self.firstname = first
+#         self.lastname = last
+#
+#     def Name(self):
+#         return self.firstname + " " + self.lastname
+#
+# class Employee(Person):
+#
+#     def __init__(self, first, last, staffnum):
+#         Person.__init__(self,first, last)
+#         self.staffnumber = staffnum
+#
+#     def GetEmployee(self):
+#         return self.Name() + ", " +  self.staffnumber
+#
+# x = Person("Marge", "Simpson")
+# y = Employee("Homer", "Simpson", "1007")
+#
+# print(x.Name())
+# print(y.GetEmployee())
         # Create an empty dictionary
         # characterFile = {}
         # featList = []
