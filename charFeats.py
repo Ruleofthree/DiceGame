@@ -13,6 +13,10 @@ class Feats:
     # def __init__(self):
     #     self.stats = []
 
+    # the only method in the program that takes advantage of the save method back in charWrite.py. I don't know how,
+    # why, or even if it is working correctly. Clearly it works when using static data, such as a level 1 newly created
+    # character, but I have no idea if it will be successful in pulling up updated information, such as when a player
+    # hits level 2, and more importantly, 3 - when a new feat can be added to a character sheet.
     def playerFeats(self, info):
 
         charName = info[0]
@@ -45,6 +49,11 @@ class Feats:
         print("Type 'back' to go back")
         print(hasTaken)
         answer = input("Feat> ").lower()
+
+        # Starting here, everything looks REALLY ugly and just feels inefficient. It works, but the amount of if/else
+        # statements used makes me think there HAS to be a way to make it more logical, and concise. Right now, it's just
+        # a nested mess.
+
         while answer != 'back':
             if answer == 'list':
                 for word in featList:
@@ -157,7 +166,7 @@ class Feats:
             answer = input("Feat> ").lower()
 
 
-
+#--------------------------------------------TEST CODE------------------------------------
 #
 #                 # characterFile = {}
 #                 #

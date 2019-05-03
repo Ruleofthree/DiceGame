@@ -26,26 +26,7 @@ if needed later.
 class Character:
 
     def basics(self):
-        levelDict = {1: [ 25,  1,   6,   15,   2,  1,  5,   30],
-                     2: [ 30,  1,   6,   15,   2,  2,  6,   90],
-                     3: [ 35,  1,   8,   15,   3,  2,  7,  180],
-                     4: [ 40,  1,   8,   15,   3,  3,  8,  300],
-                     5: [ 45,  1,  10,   16,   4,  3,  9,  450],
-                     6: [ 50,  1,  10,   16,   4,  4, 10,  630],
-                     7: [ 55,  2,  12,   16,   5,  4, 11,  840],
-                     8: [ 60,  2,  12,   16,   5,  5, 12, 1080],
-                     9: [ 65,  2,  16,   16,   6,  5, 13, 1350],
-                    10: [ 70,  2,  16,   17,   6,  6, 15, 1650],
-                    11: [ 75,  3,  18,   17,   7,  6, 16, 1980],
-                    12: [ 80,  3,  18,   17,   7,  7, 17, 2340],
-                    13: [ 85,  2,  20,   17,   8,  7, 18, 2730],
-                    14: [ 90,  2,  20,   17,   8,  8, 19, 3150],
-                    15: [100,  2,  24,   18,   9,  8, 20, 3600],
-                    16: [110,  4,  24,   18,   9,  9, 21, 4080],
-                    17: [130,  4,  32,   18,  10,  9, 22, 4590],
-                    18: [135,  4,  32,   18,  10, 10, 23, 5130],
-                    19: [140,  3,  36,   18,  11, 10, 24, 5700],
-                    20: [150,  3,  36,   19,  11, 11, 25, 6300]}
+        levelDict = {1: [ 25,  1,   6,   15,   2,  1,  5,    75]}
 
         # As this is character creation, level will always be equal to 1, and xp always equal to 0
         playerLevel = 1
@@ -72,7 +53,7 @@ class Character:
         print("You currently have: " + str(playerXP) + " experience and need: " + str(toNextLevel) + " to reach the next level.")
         return [charName, playerLevel, statHP, statHit, statDamage, numberOfDice, numberOfSides, statPoints, statFeats, statAC, playerXP, toNextLevel,]
 
-        # This function focuses purely on assigning values to the three primary stats: Strength, Dexterity, and
+        # This method focuses purely on assigning values to the three primary stats: Strength, Dexterity, and
         # Constitution. While loops are set in place to ensure that no value is placed above 10, or any remaining points
         # they player has left to allocate. Once completed, the information is displayed with their appropriate modifiers
         # and the player is asked if they want to keep their setup, or redistribute.
@@ -117,7 +98,7 @@ class Character:
 
     def save(self, basics, abilities):
 
-        '''
+        """
         basics[0]  = Character Name
         basics[1]  = Level
         basics[2]  = Hit Points       +          abilities[2] = Constitution Modifier
@@ -134,7 +115,7 @@ class Character:
         abilities[3] = Strength
         abilities[4] = Dexterity
         abilities[5] = Constitution
-        '''
+        """
         # Create an empty dictionary
         characterFile = {}
 
@@ -166,6 +147,8 @@ class Character:
         characterFile["dexterity"] = dexterity
         constitution = abilities[5]
         characterFile["constitution"] = constitution
+        ap = basics[7]
+        characterFile["total ap"] = ap
 
         # apply a hidden counters, that will keep track of number of feats throughout level progression
         remainingFeats = 2
