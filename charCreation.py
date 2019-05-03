@@ -10,7 +10,7 @@ This spot is reserved to determine how to ensure one account has one character
 
 '''
 key = level
-Element = value
+Index   = value type
 0       = hit Points
 1       = minimum damage
 2       = maximum damage
