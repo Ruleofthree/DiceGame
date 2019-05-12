@@ -20,7 +20,7 @@ Index   = value type
 6       = base Armor Class
 7       = experience Points to next level
 
-Strictly speaking, this script only needs the first key in the levelDict. No need to load the level char json.
+Strictly speaking, this script only needs the first key in the levelDict. No need to load the level chart json.
 '''
 class Character:
 

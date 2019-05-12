@@ -65,12 +65,12 @@ class Combat:
             print(self.playerOne + " Goes first")
             token = 1
             self.token = token
-            self.determineHitPOne()
+            #self.determineHitPOne()
         elif totalTwo > totalOne:
             print(self.playerTwo + " Goes first")
             token = 2
             self.token = token
-            self.determineHitPTwo()
+            #self.determineHitPTwo()
         elif totalOne == totalTwo:
             print("In result of tie, person with highest dexterity modifier goes first:")
             print(self.playerOne + "'s dexterity: " + str(playerOneMod))
@@ -80,12 +80,12 @@ class Combat:
                 print(self.playerOne + " Goes first")
                 token = 1
                 self.token = token
-                self.determineHitPOne()
+                #self.determineHitPOne()
             elif playerOneMod < playerTwoMod:
                 print(self.playerTwo + " Goes first")
                 token = 2
                 self.token = token
-                self.determineHitPTwo()
+                #self.determineHitPTwo()
             else:
                 print("As both dexterity values are equal as well. A coin flip. Value of one means " + self.playerOne +  " goes first")
                 value = random.randint(1, 2)
@@ -94,12 +94,12 @@ class Combat:
                     print(self.playerOne + " Goes first")
                     token = 1
                     self.token = token
-                    self.determineHitPOne()
+                    #self.determineHitPOne()
                 else:
                     print(self.playerTwo + " Goes first")
                     token = 2
                     self.token = token
-                    self.determineHitPTwo()
+                    #self.determineHitPTwo()
 
     # Next two methods are created to see if a character hit the other character or not. Simulates rolling 1d20 (1-20)
     # then adding any modifiers to the result. If the total either meets or exceeds the other players AC, notify the
