@@ -117,6 +117,7 @@ class Combat:
     # Note: I want to add in a result that will double damage if the ROLL is a 20, not the total.
 
     def playerOnePrep(self):
+        mod = 0
         for word in self.pOneInfo["feats taken"]:
             if self.pOneLevel <= 4:
                 mod = "1"
@@ -129,22 +130,39 @@ class Combat:
             elif self.pOneLevel > 17 and self.pOneLevel <= 20:
                 mod = "5"
             if word == "power attack":
-                pMod = int(input("How many points do you want to use for power attack? (1 - " + mod + ") "))
+                pMod = 6
                 while pMod > int(mod):
-                    pMod = int(input("Please select a number between 1 and " + mod + ": "))
+                    try:
+                        pMod = int(input("How many points do you want to use for power attack? (0 - " + mod + ") "))
+                    except ValueError:
+                        pass
+                    print("Please select a number between 0 and " + mod + ": ")
                 self.pMod = pMod
             if word == "combat expertise":
                 cMod = int(input("How many points do you want to use for combat expertise? (1 - " + mod + ") "))
                 while cMod > int(mod):
-                    cMod = int(input("Please select a number between 1 and " + mod + ": "))
+                    try:
+                        cMod = int(input("Please select a number between 1 and " + mod + ": "))
+                    except ValueError:
+                        pass
+                    print("Please select a number between 0 and " + mod + ": ")
                 self.cMod = cMod
             if word == "defensive fighting":
-                dMod = int(input("How many points do you want to use for defensive fighting? (1 - " + mod + ") "))
+                try:
+                    dMod = int(input("How many points do you want to use for defensive fighting? (1 - " + mod + ") "))
+                except ValueError:
+                    pass
+                print("Please select a number between 0 and " + mod + ": ")
                 while dMod > int(mod):
+                try:
                     dMod = int(input("Please select a number between 1 and " + mod + ": "))
+                except ValueError:
+                    pass
+                print("Please select a number between 0 and " + mod + ": ")
                 self.pOnedMod = dMod
             if word == "masochism":
-                mMod = int(input("How many points do you want to use for masochism? (1 - " + mod + ") "))
+                try:
+                    mMod = int(input("How many points do you want to use for masochism? (1 - " + mod + ") "))
                 while mMod > int(mod):
                     mMod = int(input("Please select a number between 1 and " + mod + ": "))
                 self.pOnedMod = mMod

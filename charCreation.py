@@ -60,36 +60,45 @@ class Character:
     def abilities(self, basics):
         statPoints = basics[7]
         print("You have " + str(statPoints) + " points to distribute between Strength, Dexterity, and Constitution.")
-        print("No single stat can be above 10 points")
+        print("No single stat can be above 10 points at 1")
         answer = "no"
         while answer == "no":
-            strengthStat = input("How many points do you want to put in Strength? ")
-            strengthStat = int(strengthStat)
-            while int(strengthStat) > 10:
+            # strengthStat = input("How many points do you want to put in Strength? ")
+            strengthStat = 0
+            while strengthStat not in (range(1, 11)):
                 print("You can not allocate more than 10 points in any stat.")
-                strengthStat = input("How many points do you want to put in Strength? ")
-            remaining = int(statPoints) - int(strengthStat)
+                try:
+                    strengthStat = int(input("How many points do you want to put in Strength? "))
+                except ValueError:
+                    print("Please enter a number between 1 and 10")
+            remaining = int(statPoints) - strengthStat
             print("You have put " + str(strengthStat) + " points in Strength, and have " + str(remaining) + " points left.")
 
-            dexterityStat = input("How many points do you want to put in Dexterity?")
-            dexterityStat = int(dexterityStat)
-            while int(dexterityStat) > remaining:
+            # dexterityStat = input("How many points do you want to put in Dexterity?")
+            dexterityStat = None
+            while dexterityStat not in (range(1, remaining+1)):
                 print("You only have " + str(remaining) + " points left")
-                dexterityStat = input("How many points do you want to put in Dexterity?")
-            remaining = remaining - int(dexterityStat)
+                try:
+                    dexterityStat = int(input("How many points do you want to put in Dexterity?"))
+                except ValueError:
+                    print("Please enter a number between 1 and " + str(remaining))
+            remaining = remaining - dexterityStat
             print("You have put " + str(dexterityStat) + " points in Dexterity, and have " + str(remaining) + " points left")
 
-            conStat = input("How many points do you want to put in Constitution?")
-            conStat = int(conStat)
-            while int(conStat) > remaining:
+            # conStat = input("How many points do you want to put in Constitution?")
+            conStat = None
+            while conStat not in (range(1, remaining+1)):
                 print("You only have " + str(remaining) + " points left")
-                conStat = input("How many points do you want to put in Constitution?")
+                try:
+                    conStat = int(input("How many points do you want to put in Constitution?"))
+                except ValueError:
+                    print("Please enter a number between 1 and " + str(remaining))
 
-            strMod = int(int(strengthStat) / 2)
+            strMod = int(strengthStat) / 2
             print("Your Strength: " + str(strengthStat) + " giving you a to Hit and Damage mod of +" + str(int(strMod)))
-            dexMod = int(int(dexterityStat) / 2)
+            dexMod = int(dexterityStat) / 2
             print("Your Dexterity: " + str(dexterityStat) + " giving you a bonus to AC of + " + str(int(dexMod)))
-            conMod = int(conStat) * 5
+            conMod = conStat * 5
             print("Your Constitution: " + str(conStat) + " giving you bonus HP of + " + str(int(conMod)))
             answer = input("Do you wish to keep these stats? (yes/no)").lower()
         return [strMod, dexMod, conMod, strengthStat, dexterityStat, conStat]
