@@ -132,10 +132,6 @@ class Combat:
                 pMod = int(input("How many points do you want to use for power attack? (1 - " + mod + ") "))
                 while pMod > int(mod):
                     pMod = int(input("Please select a number between 1 and " + mod + ": "))
-                    try:
-                        pMod = int(pMod)
-                    except ValueError:
-                        print("Please put in an integer.")
                 self.pMod = pMod
             if word == "combat expertise":
                 cMod = int(input("How many points do you want to use for combat expertise? (1 - " + mod + ") "))
