@@ -29,7 +29,7 @@ class Hub(cmd.Cmd):
         This command will initiate combat between two opponents.
         """
         fight = gameCombat.Combat()
-        fight.initiative()
+        fight.setupData()
 
 
 
@@ -99,10 +99,8 @@ class Feats(cmd.Cmd):
 
     def do_getfeat(self,args):
         """Select your feats with this option"""
-        module = charWrite.SaveModule()
-        info = module.save()
         getFeats = charFeats.Feats()
-        getFeats.playerFeats(info)
+        getFeats.playerFeats()
 
     def do_quit(self, args):
         """Leaves Feat Selection"""

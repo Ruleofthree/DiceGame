@@ -132,18 +132,18 @@ class Character:
         characterFile["name"] = name
         level = basics[1]
         characterFile["level"] = level
-        hp = basics[2] + abilities[2]
+        hp = int(basics[2] + abilities[2])
         characterFile["hitpoints"] = hp
         tFeats = basics[8]
         characterFile["total feats"] = tFeats
-        hit = basics[3] + abilities[0]
         numberOfDice = basics[5]
         numberOfSides = basics[6]
         characterFile["base damage"] = numberOfDice + "d" + numberOfSides
+        hit = int(basics[3] + abilities[0])
         characterFile["hit"] = hit
-        damage = basics[3] + abilities[0]
+        damage = int(basics[3] + abilities[0])
         characterFile["damage modifier"] = damage
-        ac = basics[9] + abilities[1]
+        ac = int(basics[9] + abilities[1])
         characterFile["ac"] = ac
         xp = basics[10]
         characterFile["currentxp"] = xp
@@ -157,12 +157,22 @@ class Character:
         characterFile["constitution"] = constitution
         ap = basics[7]
         characterFile["total ap"] = ap
+        hasTaken = []
+        characterFile["feats taken"] = hasTaken
 
         # apply a hidden counters, that will keep track of number of feats throughout level progression
         remainingFeats = 2
         characterFile["remaining feats"] = remainingFeats
-        hasTaken = []
-        characterFile["feats taken"] = hasTaken
+        characterFile["crippling"] = 1
+        characterFile["staggering"] = 1
+        characterFile["evasion"] = 1
+        characterFile["quick"] = 1
+        characterFile["ripose"] = 1
+        characterFile["deflect"] = 1
+        characterFile["reckless"] = 1
+        characterFile["titan's blow"] = 1
+        characterFile["true strike"] = 1
+
 
         print("Your character has been saved.")
         # create the JSON file

@@ -19,12 +19,12 @@ class Combat:
         self.pTwoCurrentHP = 0
         self.pOneLevel = 0
         self.pTwoLevel = 0
-        self.pMod = 0
-        self.cMod = 0
-        self.dMod = 0
+        self.pOnepMod = 0
+        self.pTwopMod = 0
+        self.pOnecMod = 0
+        self.pTwocMod = 0
         self.pOnedMod = 0
         self.pTwodMod = 0
-        self.mMod = 0
         self.pOnemMod = 0
         self.pTwomMod = 0
         self.xp = 0
@@ -32,54 +32,59 @@ class Combat:
         self.nextLevel = 0
         self.levelUp = 0
 
-    # method dedicated to determining who goes first in combat. Simulates a roll of a 20-sided die (1-20), then adds
-    # character's dexterity modifier (dexterity score divided by 2). In the event of a tie, determines who goes first
-    # by finding the highest dexterity modifier between opponents. Should THAT tie as well, does a coin flip.
 
-    def initiative(self):
-        self.playerOne = input("Who is the challenger? ")
+    def setupData(self):
         # opens and loads in player one's character sheet. This is done in this method solely because I'm unsure if
         # loading json files in __init__ is actually a good idea. If I understand things correctly, things in a class's
         # __init__ is ran EVERY TIME a method is called within it. If so, then the json files would be opened, loaded,
         # and closed multiple times in a single run. Seems inefficient, and bad coding.
+        self.playerOne = input("Who is the challenger? ")
         charFile = open(self.playerOne + ".txt", "r", encoding="utf-8")
         pOneInfo = json.load(charFile)
         charFile.close()
         self.pOneInfo = pOneInfo
+
         self.playerTwo = input("And their opponent? ")
-        # does same for character sheet of player two.
         charFile = open(self.playerTwo + ".txt", "r", encoding="utf-8")
         pTwoInfo = json.load(charFile)
         charFile.close()
         self.pTwoInfo = pTwoInfo
-        # I feel this is a terrible place to define the blow assignments, as hit points have nothing to do with initiative
-        # but want to get all relevant data in to __init__ for ease of use, without opening, loading, and closing jsons
-        # in the __init__ file itself.
+
         self.pOneTotalHP = pOneInfo['hitpoints']
         self.pTwoTotalHP = pTwoInfo['hitpoints']
         self.pOneCurrentHP = pOneInfo['hitpoints']
         self.pTwoCurrentHP = pTwoInfo['hitpoints']
         self.pOneLevel = pOneInfo['level']
         self.pTwoLevel = pTwoInfo['level']
+        #self.pOneCrippling = pOneInfo['feats taken']
+
+        self.initiative()
+
+    # method dedicated to determining who goes first in combat. Simulates a roll of a 20-sided die (1-20), then adds
+    # character's dexterity modifier (dexterity score divided by 2). In the event of a tie, determines who goes first
+    # by finding the highest dexterity modifier between opponents. Should THAT tie as well, does a coin flip.
+
+    def initiative(self):
         playerOneInit = random.randint(1, 20)
-        playerOneMod = int(pOneInfo['dexterity'] / 2)
+        playerOneMod = int(self.pOneInfo['dexterity'] / 2)
         totalOne = playerOneInit + playerOneMod
         print(self.playerOne +" rolled: " + str(playerOneInit) + " + " + str(playerOneMod) + " and got " + str(totalOne))
 
         playerTwoInit = random.randint(1, 20)
-        playerTwoMod = int(pTwoInfo['dexterity'] / 2)
+        playerTwoMod = int(self.pTwoInfo['dexterity'] / 2)
         totalTwo = playerTwoInit + playerTwoMod
         print(self.playerTwo + " rolled: " + str(playerTwoInit) + " + " + str(playerTwoMod) + " and got " + str(totalTwo))
+
         if totalOne > totalTwo:
             print(self.playerOne + " Goes first")
             token = 1
             self.token = token
-            self.playerOnePrep()
+            self.determineHitPOne()
         elif totalTwo > totalOne:
             print(self.playerTwo + " Goes first")
             token = 2
             self.token = token
-            self.playerTwoPrep()
+            self.determineHitPTwo()
         elif totalOne == totalTwo:
             print("In result of tie, person with highest dexterity modifier goes first:")
             print(self.playerOne + "'s dexterity: " + str(playerOneMod))
@@ -89,26 +94,27 @@ class Combat:
                 print(self.playerOne + " Goes first")
                 token = 1
                 self.token = token
-                self.playerOnePrep()
+                self.determineHitPOne()
             elif playerOneMod < playerTwoMod:
                 print(self.playerTwo + " Goes first")
                 token = 2
                 self.token = token
-                self.playerTwoPrep()
+                self.determineHitPTwo()
             else:
                 print("As both dexterity values are equal as well. A coin flip. Value of one means " + self.playerOne +  " goes first")
                 value = random.randint(1, 2)
                 print(value)
+
                 if value == 1:
                     print(self.playerOne + " Goes first")
                     token = 1
                     self.token = token
-                    self.playerOnePrep()
+                    self.determineHitPOne()
                 else:
                     print(self.playerTwo + " Goes first")
                     token = 2
                     self.token = token
-                    self.playerTwoPrep()
+                    self.determineHitPTwo()
 
     # Next two methods are created to see if a character hit the other character or not. Simulates rolling 1d20 (1-20)
     # then adding any modifiers to the result. If the total either meets or exceeds the other players AC, notify the
@@ -116,134 +122,69 @@ class Combat:
     # that it was a miss, and move on to other player's turn.
     # Note: I want to add in a result that will double damage if the ROLL is a 20, not the total.
 
-    def playerOnePrep(self):
-        mod = 0
-        for word in self.pOneInfo["feats taken"]:
-            if self.pOneLevel <= 4:
-                mod = "1"
-            elif self.pOneLevel < 4 and self.pOneLevel <= 8:
-                mod = "2"
-            elif self.pOneLevel > 8 and self.pOneLevel <= 12:
-                mod = "3"
-            elif self.pOneLevel > 12 and self.pOneLevel <= 16:
-                mod = "4"
-            elif self.pOneLevel > 17 and self.pOneLevel <= 20:
-                mod = "5"
-            if word == "power attack":
-                pMod = 6
-                while pMod > int(mod):
-                    try:
-                        pMod = int(input("How many points do you want to use for power attack? (0 - " + mod + ") "))
-                    except ValueError:
-                        pass
-                    print("Please select a number between 0 and " + mod + ": ")
-                self.pMod = pMod
-            if word == "combat expertise":
-                cMod = int(input("How many points do you want to use for combat expertise? (1 - " + mod + ") "))
-                while cMod > int(mod):
-                    try:
-                        cMod = int(input("Please select a number between 1 and " + mod + ": "))
-                    except ValueError:
-                        pass
-                    print("Please select a number between 0 and " + mod + ": ")
-                self.cMod = cMod
-            if word == "defensive fighting":
-                try:
-                    dMod = int(input("How many points do you want to use for defensive fighting? (1 - " + mod + ") "))
-                except ValueError:
-                    pass
-                print("Please select a number between 0 and " + mod + ": ")
-                while dMod > int(mod):
-                try:
-                    dMod = int(input("Please select a number between 1 and " + mod + ": "))
-                except ValueError:
-                    pass
-                print("Please select a number between 0 and " + mod + ": ")
-                self.pOnedMod = dMod
-            if word == "masochism":
-                try:
-                    mMod = int(input("How many points do you want to use for masochism? (1 - " + mod + ") "))
-                while mMod > int(mod):
-                    mMod = int(input("Please select a number between 1 and " + mod + ": "))
-                self.pOnedMod = mMod
-            self.determineHitPOne()
-
-    def playerTwoPrep(self):
-        for word in self.pTwoInfo["feats taken"]:
-            print(word)
-            if self.pTwoLevel <= 4:
-                mod = "1"
-            elif self.pTwoLevel < 4 and self.pTwoLevel <= 8:
-                mod = "2"
-            elif self.pTwoLevel > 8 and self.pTwoLevel <= 12:
-                mod = "3"
-            elif self.pTwoLevel > 12 and self.pTwoLevel <= 16:
-                mod = "4"
-            elif self.pTwoLevel > 17 and self.pTwoLevel <= 20:
-                mod = "5"
-            if word == "power attack":
-                pMod = int(input("How many points do you want to use for power attack? (0 - " + mod + ") "))
-                while pMod > int(mod):
-                    pMod = int(input("Please select a number between 0 and " + mod + ": "))
-                self.pMod = pMod
-            if word == "combat expertise":
-                cMod = int(input("How many points do you want to use for combat expertise? (0 - " + mod + ") "))
-                while cMod > int(mod):
-                    cMod = int(input("Please select a number between 0 and " + mod + ": "))
-                self.cMod = cMod
-            if word == "defensive fighting":
-                dMod = int(input("How many points do you want to use for defensive fighting? (0 - " + mod + ") "))
-                while dMod > int(mod):
-                    dMod = int(input("Please select a number between 0 and " + mod + ": "))
-                self.pTwodMod = dMod
-            if word == "masochism":
-                mMod = int(input("How many points do you want to use for masochism? (0 - " + mod + ") "))
-                while mMod > int(mod):
-                    mMod = int(input("Please select a number between 0 and " + mod + ": "))
-                self.pTwomMod = mMod
-        self.determineHitPTwo()
-
     def determineHitPOne(self):
-        pOneToHit = self.pOneInfo['hit']
-        pTwoAC = self.pTwoInfo['ac']
-        pMod = self.pMod
-        cMod = self.cMod
-        dMod = self.pOnedMod
-        mMod = self.pOnemMod
-        pTwodMod = self.pTwodMod
-        pTwomMod = self.pTwomMod
-        hit = random.randint(1, 20)
-        total = hit + pOneToHit - pMod + cMod - dMod + mMod
-        print("Roll: " + str(hit) + " Base: " + str(pOneToHit) + " PA: " + str(pMod) + " CE: " + str(cMod) + " DF: " + str(dMod) + " MC: " + str(mMod))
-        totalAC = pTwoAC + pTwodMod - pTwomMod
-        print("P2 AC: " + str(pTwoAC) + " DF: " + str(pTwodMod) + " MC: " + str(pTwomMod))
-        if total >= totalAC:
-            print(self.playerOne + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and was successful.")
-            self.pTwodMod = 0
-            self.pTwomMod = 0
-            self.determineDamagePOne()
-        else:
-            print(self.playerTwo + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and missed.")
-            self.pTwodMod = 0
-            self.ptwomMod = 0
-            self.scoreboard()
+            pOneToHit = self.pOneInfo['hit']
+            pTwoAC = self.pTwoInfo['ac']
+            for word in self.pOneInfo["feats taken"]:
+                if word == "power attack":
+                    self.pOnepMod = self.pOnePowerAttack()
+                if word == "combat expertise":
+                    self.pOnecMod = self.pOneCombatExpertise()
+                if word == "defensive fighting":
+                    self.pOnedMod = self.pOneDefensiveFighting()
+                if word == "masochist":
+                    self.pOnemMod = self.pOneMasochist()
+            pMod = self.pOnepMod
+            cMod = self.pOnecMod
+            dMod = self.pOnedMod
+            mMod = self.pOnemMod
+            print(self.pOnepMod)
+            pTwodMod = self.pTwodMod
+            pTwomMod = self.pTwomMod
+            hit = random.randint(1, 20)
+            total = int(hit + pOneToHit - pMod + cMod - dMod + mMod)
+            print("Roll: " + str(hit) + " Base: " + str(pOneToHit) + " PA: " + str(pMod) + " CE: " + str(cMod) + " DF: " + str(dMod) + " MC: " + str(mMod))
+            totalAC = pTwoAC + pTwodMod - pTwomMod
+            print("P2 AC: " + str(pTwoAC) + " DF: " + str(pTwodMod) + " MC: " + str(pTwomMod))
+            if total >= totalAC:
+                print(self.playerOne + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and was successful.")
+                self.pTwodMod = 0
+                self.pTwomMod = 0
+                self.determineDamagePOne()
+            else:
+                print(self.playerTwo + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and missed.")
+                self.pTwodMod = 0
+                self.pTwomMod = 0
+                self.scoreboard()
 
     def determineHitPTwo(self):
         pTwoToHit = self.pTwoInfo['hit']
         pOneAC = self.pOneInfo['ac']
-        pMod = self.pMod
-        cMod = self.cMod
+        for word in self.pTwoInfo["feats taken"]:
+            if word == "power attack":
+                self.pTwopMod = self.pTwoPowerAttack()
+            if word == "combat expertise":
+                self.pTwocMod = self.pTwoCombatExpertise()
+            if word == "defensive fighting":
+                self.pTwodMod = self.pTwoDefensiveFighting()
+            if word == "masochist":
+                self.pTwomMod = self.pTwoMasochist()
+                print(self.pTwomMod)
+        pMod = self.pTwopMod
+        cMod = self.pTwocMod
         dMod = self.pTwodMod
         mMod = self.pTwomMod
+        print(mMod)
         pOnedMod = self.pOnedMod
         pOnemMod = self.pOnemMod
+        # crippleMod = self.pOneCripple()
         hit = random.randint(1, 20)
-        total = hit + pTwoToHit - pMod + cMod - dMod + mMod
+        total = int(hit + pTwoToHit - pMod + cMod - dMod + mMod)
         print("Roll: " + str(hit) + " Base: " + str(pTwoToHit) + " PA: " + str(pMod) + " CE: " + str(cMod) + " DF: " + str(dMod) + " MC: " + str(mMod))
         totalAC = pOneAC + pOnedMod - pOnemMod
         print(" P1 AC: " + str(pOneAC) + " DF: " + str(pOnedMod) + " MC: " + str(pOnemMod))
         hit = random.randint(1, 20) + pTwoToHit
-        if hit >= pOneAC:
+        if total >= pOneAC:
             print(self.playerTwo + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and was successful.")
             self.pOnedMod = 0
             self.pOnemMod = 0
@@ -266,10 +207,10 @@ class Combat:
         pOneBaseDamage = self.pOneInfo['base damage']
         pOneModifier = self.pOneInfo['damage modifier']
         pOneMinimum, pOneMaximum = pOneBaseDamage.split('d')
-        pMod = self.pMod
-        cMod = self.cMod
+        pMod = self.pOnepMod
+        cMod = self.pOnecMod
         damage = random.randint(int(pOneMinimum), int(pOneMaximum))
-        total = damage + pOneModifier + pMod - cMod
+        total = int(damage + pOneModifier + pMod - cMod)
         self.totalDamage = total
         print(" Roll: " + str(damage) + " Modifier: " + str(pOneModifier) + " PA: " + str(pMod) + " CD: " + str(cMod))
         if total < 1:
@@ -283,10 +224,10 @@ class Combat:
         pTwoBaseDamage = self.pTwoInfo['base damage']
         pTwoModifier = self.pTwoInfo['damage modifier']
         pTwoMinimum, pTwoMaximum = pTwoBaseDamage.split('d')
-        pMod = self.pMod
-        cMod = self.cMod
+        pMod = self.pTwopMod
+        cMod = self.pTwocMod
         damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
-        total = damage + pTwoModifier + pMod - cMod
+        total = int(damage + pTwoModifier + pMod - cMod)
         self.totalDamage = total
         print("Roll: " + str(damage) + " Modifier: " + str(pTwoModifier) + " PA: " + str(pMod) + " CD: " + str(cMod))
         if total < 1:
@@ -325,10 +266,10 @@ class Combat:
         if self.pOneCurrentHP > 0 and self.pTwoCurrentHP > 0:
             if self.token == 1:
                 self.count += 1
-                self.playerTwoPrep()
+                self.determineHitPTwo()
             elif self.token == 2:
                 self.count += 1
-                self.playerOnePrep()
+                self.determineHitPOne()
         else:
             self.setXP()
 
@@ -409,6 +350,207 @@ class Combat:
                 file.close()
         else:
             pass
+    #----------------------------------------------- FEAT METHODS ------------------------------------------------------
+    def pOnePowerAttack(self):
+        mod = 0
+        print(type(self.pOneLevel))
+        if self.pOneLevel <= 4:
+            mod = "1"
+        elif  4 < self.pOneLevel <= 8:
+            mod = "2"
+        elif  8 < self.pOneLevel <= 12:
+            mod = "3"
+        elif 12 < self.pOneLevel <= 16:
+            mod = "4"
+        elif 16 < self.pOneLevel <= 20:
+            mod = "5"
+        pMod = 6
+        while pMod > int(mod):
+            try:
+                pMod = int(input("Select point allocation for Power Attack (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(pMod)
+
+    def pTwoPowerAttack(self):
+        mod = 0
+        print(type(self.pTwoLevel))
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pTwoLevel <= 8:
+            mod = "2"
+        elif  8 < self.pTwoLevel <= 12:
+            mod = "3"
+        elif 12 < self.pTwoLevel <= 16:
+            mod = "4"
+        elif 16 < self.pTwoLevel <= 20:
+            mod = "5"
+        pMod = 6
+        while pMod > int(mod):
+            try:
+                pMod = int(input("Select point allocation for Power Attack (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(pMod)
+
+
+    def pOneCombatExpertise(self):
+        mod = 0
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pOneLevel <= 8:
+            mod = "2"
+        elif  8 < self.pOneLevel <= 12:
+            mod = "3"
+        elif 12 < self.pOneLevel <= 16:
+            mod = "4"
+        elif 16 < self.pOneLevel <= 20:
+            mod = "5"
+        cMod = 6
+        while cMod > int(mod):
+            try:
+                cMod = int(input("Select point allocation for Combat Expertise (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(cMod)
+
+    def pTwoCombatExpertise(self):
+        mod = 0
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pTwoLevel <= 8:
+            mod = "2"
+        elif  8 < self.pTwoLevel <= 12:
+            mod = "3"
+        elif 12 < self.pTwoLevel <= 16:
+            mod = "4"
+        elif 16 < self.pTwoLevel <= 20:
+            mod = "5"
+        cMod = 6
+        while cMod > int(mod):
+            try:
+                cMod = int(input("Select point allocation for Combat Expertise (0- " + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(cMod)
+
+    def pOneDefensiveFighting(self):
+        mod = 0
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pOneLevel <= 8:
+            mod = "2"
+        elif  8 < self.pOneLevel <= 12:
+            mod = "3"
+        elif 12 < self.pOneLevel <= 16:
+            mod = "4"
+        elif 16 < self.pOneLevel <= 20:
+            mod = "5"
+        dMod = 6
+        while dMod > int(mod):
+            try:
+                dMod = int(input("Select point allocation for Defensive Fighting (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(dMod)
+
+    def pTwoDefensiveFighting(self):
+        mod = 0
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pTwoLevel <= 8:
+            mod = "2"
+        elif  8 < self.pTwoLevel <= 12:
+            mod = "3"
+        elif 12 < self.pTwoLevel <= 16:
+            mod = "4"
+        elif 16 < self.pTwoLevel <= 20:
+            mod = "5"
+        dMod = 6
+        while dMod > int(mod):
+            try:
+                dMod = int(input("Select point allocation for Defensive Fighting (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(dMod)
+
+    def pOneMasochist(self):
+        mod = 0
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pOneLevel <= 8:
+            mod = "2"
+        elif  8 < self.pOneLevel <= 12:
+            mod = "3"
+        elif 12 < self.pOneLevel <= 16:
+            mod = "4"
+        elif 16 < self.pOneLevel <= 20:
+            mod = "5"
+        mMod = 6
+        while mMod > int(mod):
+            try:
+                mMod = int(input("Select point allocation for Masochist (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(mMod)
+
+    def pTwoMasochist(self):
+        mod = 0
+        print(type(self.pTwoLevel))
+        if self.pTwoLevel <= 4:
+            mod = "1"
+        elif  4 < self.pTwoLevel <= 8:
+            mod = "2"
+        elif  8 < self.pTwoLevel <= 12:
+            mod = "3"
+        elif 12 < self.pTwoLevel <= 16:
+            mod = "4"
+        elif 16 < self.pTwoLevel <= 20:
+            mod = "5"
+        mMod = 6
+        while mMod > int(mod):
+            try:
+                mMod = int(input("Select point allocation for Masochist (0-" + mod + "): "))
+            except ValueError:
+                pass
+            print("Please select a number between 0 and " + mod + ": ")
+        return int(mMod)
+
+    # def pOneUseFeat(self):
+    #     crippling = self.pOneInfo['crippling']
+    #     staggering = self.pOneInfo["staggering"]
+    #     evasion = self.pOneInfo["evasion"]
+    #     quick = self.pOneInfo["quick"]
+    #     ripose = self.pOneInfo["ripose"]
+    #     deflect = self.pOneInfo["deflect"]
+    #     reckless = self.pOneInfo["reckless"]
+    #     titan = self.pOneInfo["titan's blow"]
+    #     strike = self.pOneInfo["true strike"]
+
+
+
+    # def pOneCripple(self):
+    #     crippling = self.pOneInfo['crippling']
+    #     if crippling == 0:
+    #         print("You have already used this feat.")
+    #     else:
+    #         crippling -= 1
+    #     if active == "crippling blow":
+    #         crippleMod = -1
+    #         return crippleMod
+    #     elif active == "improved crippling blow":
+    #         crippleMod = -2
+    #         return crippleMod
+    #     elif active == "greater crippling blow":
+    #         crippleMod = -3
+    #         return crippleMod
 
 
 # ------------------------------------TEST CODE-----------------------------------------

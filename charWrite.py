@@ -57,44 +57,44 @@ class SaveModule:
 
     # A method INTENDED to be the hub of obtaining json data, and distributing it across modules when needed. Unsure if
     # it works as intended. Suspect it is not.
-    def save(self):
-        name = self.name
-        level = self.level
-        hp = self.hp
-        tFeats = self.tFeats
-        baseDamage = self.baseDamage
-        hit = self.hit
-        damage = self.damage
-        ac = self.ac
-        xp = self.xp
-        nextLevel = self.nextLevel
-        strength = self.strength
-        dexterity = self.dexterity
-        constitution = self.constitution
-        remainingFeats = self.remainingFeats
-        hasTaken = self.hasTaken
-        totalAP = self.ap
-
-        info = []
-
-        info.append(name)
-        info.append(level)
-        info.append(hp)
-        info.append(tFeats)
-        info.append(baseDamage)
-        info.append(hit)
-        info.append(damage)
-        info.append(ac)
-        info.append(xp)
-        info.append(nextLevel)
-        info.append(strength)
-        info.append(dexterity)
-        info.append(constitution)
-        info.append(remainingFeats)
-        info.append(hasTaken)
-        info.append(totalAP)
-
-        return info
+    # def save(self):
+    #     name = self.name
+    #     level = self.level
+    #     hp = self.hp
+    #     tFeats = self.tFeats
+    #     baseDamage = self.baseDamage
+    #     hit = self.hit
+    #     damage = self.damage
+    #     ac = self.ac
+    #     xp = self.xp
+    #     nextLevel = self.nextLevel
+    #     strength = self.strength
+    #     dexterity = self.dexterity
+    #     constitution = self.constitution
+    #     remainingFeats = self.remainingFeats
+    #     hasTaken = self.hasTaken
+    #     totalAP = self.ap
+    #
+    #     info = []
+    #
+    #     info.append(name)
+    #     info.append(level)
+    #     info.append(hp)
+    #     info.append(tFeats)
+    #     info.append(baseDamage)
+    #     info.append(hit)
+    #     info.append(damage)
+    #     info.append(ac)
+    #     info.append(xp)
+    #     info.append(nextLevel)
+    #     info.append(strength)
+    #     info.append(dexterity)
+    #     info.append(constitution)
+    #     info.append(remainingFeats)
+    #     info.append(hasTaken)
+    #     info.append(totalAP)
+    #
+    #     return info
 
     # The one part of this module that does work. Loads in json of the desired character, and assigns variables to all
     # the data. Then displays the data in an easy to read format for the user.
@@ -203,14 +203,13 @@ class SaveModule:
         print("Character Name:     " + charName)
         print("Level:              " + str(charLevel) + "       Strength:     " + str(charStr))
         print("Hit Points:         " + str(charHP) + "      Dexterity:    " + str(charDex))
-        print("To Hit Modifier:    " + str(charHit) + "       Constitution: " + str(charCon))
+        print("To Hit Modifier:    " + str(int(charHit)) + "       Constitution: " + str(charCon))
         print("Base Damage:        " + charBaseDamage + "     Total Ability Points: " + str(charAP))
         print("Total Feats:        " + str(charFeats))
-        print("Damage Modifier:    " + str(charDamage))
-        print("Armor Class:        " + str(charAC))
+        print("Damage Modifier:    " + str(int(charDamage)))
+        print("Armor Class:        " + str(int(charAC)))
         print("Current XP:         " + str(charXP))
         print("XP needed to level: " + str(nextLevel))
-
         print("Available feats:    " + str(remainingFeats))
 
         # Find if character sheet has any feats the list held in the 'feats taken' key of character's json. If the list

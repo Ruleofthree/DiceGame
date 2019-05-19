@@ -17,28 +17,30 @@ class Feats:
     # why, or even if it is working correctly. Clearly it works when using static data, such as a level 1 newly created
     # character, but I have no idea if it will be successful in pulling up updated information, such as when a player
     # hits level 2, and more importantly, 3 - when a new feat can be added to a character sheet.
-    def playerFeats(self, info):
+    def playerFeats(self):
 
-        charName = info[0]
-        charLevel = info[1]
-        charHP = info[2]
-        charFeats = info[3]
-        charBaseDamage = info[4]
-        charHit = info[5]
-        charDamage = info[6]
-        charAC = info[7]
-        charXP = info[8]
-        nextLevel = info[9]
-        charStr = info[10]
-        charDex = info[11]
-        charCon = info[12]
-        hasTaken = info[14]
-        remainingFeats = info[13]
+        char = input("Which character? ")
+        charFile = open(char + ".txt", "r", encoding="utf-8")
+        info = json.load(charFile)
+        charFile.close()
 
-        # self.stats = [charName, charLevel, charHP, charFeats, charBaseDamage, charHit, charDamage, charAC
-        #              charXP, nextLevel, charStr, charDex, charCon, hasTaken, remainingFeats]
+        charName = info['name']
+        charLevel = info['level']
+        charHP = info['hitpoints']
+        charFeats = info['total feats']
+        charBaseDamage = info['base damage']
+        charHit = info['hit']
+        charDamage = info['damage modifier']
+        charAC = info['ac']
+        charXP = info['currentxp']
+        nextLevel = info['nextlevel']
+        charStr = info['strength']
+        charDex = info['dexterity']
+        charCon = info['constitution']
+        hasTaken = info['feats taken']
+        remainingFeats = info['remaining feats']
+
         #place all keys within a list for comparison later
-
 
         featDict = gameFeats.featDict()[0]
         featList = gameFeats.featDict()[1]
@@ -83,8 +85,6 @@ class Feats:
                         reqDex = featDict[0][answer]['requirements'][2]
                         reqCon = featDict[0][answer]['requirements'][3]
                         reqFeats = featDict[0][answer]['requirements'][4]
-                        print(reqCon)
-                        print(charCon)
                         if level > charLevel:
                             print("You are not the required level for this feat")
                         elif reqStr > charStr:
@@ -98,7 +98,6 @@ class Feats:
                         elif answer not in hasTaken:
                             print(answer + " has been added to your character sheet.")
                             remainingFeats = remainingFeats - 1
-                            print(remainingFeats)
                             hasTaken.append(answer)
                             if answer == "dexterous fighter":
                                 dexMod = int(charDex / 2)
