@@ -369,8 +369,7 @@ class Combat:
             try:
                 pMod = int(input("Select point allocation for Power Attack (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(pMod)
 
     def pTwoPowerAttack(self):
@@ -391,8 +390,7 @@ class Combat:
             try:
                 pMod = int(input("Select point allocation for Power Attack (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(pMod)
 
 
@@ -413,8 +411,7 @@ class Combat:
             try:
                 cMod = int(input("Select point allocation for Combat Expertise (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(cMod)
 
     def pTwoCombatExpertise(self):
@@ -434,8 +431,7 @@ class Combat:
             try:
                 cMod = int(input("Select point allocation for Combat Expertise (0- " + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(cMod)
 
     def pOneDefensiveFighting(self):
@@ -455,8 +451,7 @@ class Combat:
             try:
                 dMod = int(input("Select point allocation for Defensive Fighting (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(dMod)
 
     def pTwoDefensiveFighting(self):
@@ -476,8 +471,7 @@ class Combat:
             try:
                 dMod = int(input("Select point allocation for Defensive Fighting (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(dMod)
 
     def pOneMasochist(self):
@@ -497,8 +491,7 @@ class Combat:
             try:
                 mMod = int(input("Select point allocation for Masochist (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(mMod)
 
     def pTwoMasochist(self):
@@ -519,8 +512,7 @@ class Combat:
             try:
                 mMod = int(input("Select point allocation for Masochist (0-" + mod + "): "))
             except ValueError:
-                pass
-            print("Please select a number between 0 and " + mod + ": ")
+                print("Please select a number between 0 and " + mod + ": ")
         return int(mMod)
 
     # def pOneUseFeat(self):
