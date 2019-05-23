@@ -3,7 +3,7 @@ import json
 import random
 import charCreation
 import charFeats
-import charWrite
+import charSheet
 import gameCombat
 
 """
@@ -80,7 +80,7 @@ class Character(cmd.Cmd):
         """
         Use this command to get a list of your character statics
         """
-        module = charWrite.SaveModule()
+        module = charSheet.SaveModule()
         module.charSheet()
 
     def do_quit(self, args):

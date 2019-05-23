@@ -1,5 +1,5 @@
 import gameFeats
-import charWrite
+import charSheet
 import charCreation
 import json
 
@@ -13,7 +13,7 @@ class Feats:
     # def __init__(self):
     #     self.stats = []
 
-    # the only method in the program that takes advantage of the save method back in charWrite.py. I don't know how,
+    # the only method in the program that takes advantage of the save method back in charSheet.py. I don't know how,
     # why, or even if it is working correctly. Clearly it works when using static data, such as a level 1 newly created
     # character, but I have no idea if it will be successful in pulling up updated information, such as when a player
     # hits level 2, and more importantly, 3 - when a new feat can be added to a character sheet.
