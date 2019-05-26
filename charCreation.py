@@ -163,15 +163,15 @@ class Character:
         # apply a hidden counters, that will keep track of number of feats throughout level progression
         remainingFeats = 2
         characterFile["remaining feats"] = remainingFeats
-        characterFile["crippling"] = 1
-        characterFile["staggering"] = 1
-        characterFile["evasion"] = 1
-        characterFile["quick"] = 1
-        characterFile["ripose"] = 1
-        characterFile["deflect"] = 1
-        characterFile["reckless"] = 1
-        characterFile["titan's blow"] = 1
-        characterFile["true strike"] = 1
+        # characterFile["crippling"] = 1
+        # characterFile["staggering"] = 1
+        # characterFile["evasion"] = 1
+        # characterFile["quick"] = 1
+        # characterFile["riposte"] = 1
+        # characterFile["deflect"] = 1
+        # characterFile["reckless"] = 1
+        # characterFile["titan's blow"] = 1
+        # characterFile["true strike"] = 1
 
 
         print("Your character has been saved.")

@@ -33,7 +33,7 @@
       "desc": "Your next attack deals 50% more damage, can only be used once per fight.",
       "requirements": [13, 10, 0, 0, "greater crushing blow"],
       "status": "active",
-      "action": 0.5
+      "action": "1.5"
     },
     "combat expertise": {
       "stat": "strength",
@@ -65,10 +65,10 @@
     },
     "true strike": {
       "stat": "strength",
-      "desc": "Allows you to attack with absolute precision, forgoing any attack roll, but doing 50% less damage",
+      "desc": "Allows you to attack with absolute precision, forgoing any attack roll, as a result, this attack CANNOT critical",
       "requirements": [13, 10, 0, 0, "greater precision strike"],
       "status": "active",
-      "action": 0.5
+      "action": 1
     },
     "crippling blow": {
       "stat": "strength",
@@ -93,10 +93,10 @@
     },
     "staggering blow": {
       "stat": "strength",
-      "desc": "Apply no modifier to damage, but a successful hit will make the opponents next attack deal 50% less damage",
+      "desc": "Apply no penalty to opponent, but a successful hit will make the opponent's next attack deal 50% less damage",
       "requirements": [13, 10, 7, 0, "greater crippling blow"],
       "status": "active",
-      "action": 0.5
+      "action": "0.5"
     },
     "defensive fighting": {
       "stat": "dexterity",
@@ -110,14 +110,14 @@
       "desc": "automatically reduce damage from the next attack by 25%",
       "requirements": [3, 0, 5, 0, "none", 0],
       "status": "active",
-      "action": 0.25
+      "action": "0.75"
     },
     "improved evasion": {
       "stat": "dexterity",
       "desc": "improves damage reduction to 50%",
       "requirements": [9, 0, 7, 0, "evasion"],
       "status": "active",
-      "action": 0.5
+      "action": "0.5"
     },
     "greater evasion": {
       "stat": "dexterity",
@@ -138,42 +138,42 @@
       "desc": "roll damage immediately after getting hit. 5% of total damage is applied to opponent. This effect fails if opponent misses",
       "requirements": [5, 0, 5, 0, "none", 0],
       "status": "active",
-      "action": 0.05
+      "action": "0.05"
     },
     "improved quick strike": {
       "stat": "dexterity",
       "desc": "improves strike to 15% of total damage.",
       "requirements": [9, 0, 7, 0, "quick strike"],
       "status": "active",
-      "action": 0.15
+      "action": "0.15"
     },
     "greater quick strike": {
       "stat": "dexterity",
       "desc": "improves quick strike to 30% total damage.",
       "requirements": [13, 0, 9, 0, "improved quick strike"],
       "status": "active",
-      "action": 0.3
+      "action": "0.3"
     },
     "riposte": {
       "stat": "dexterity",
       "desc": "improves quick strike to 50% of total damage. If opponent misses, you gain a +5 bonus to hit on your next attack.",
       "requirements": [15, 0, 10, 0, "greater quick strike"],
       "status": "active",
-      "action": [0.5, 5]
+      "action": ["0.5", 5]
     },
     "deflect": {
       "stat": "dexterity",
       "desc": "You only take 90% of total damage",
       "requirements": [5, 0, 5, 0, "none", 0],
       "status": "active",
-      "action": 0.9
+      "action": "0.1"
     },
     "improved deflect": {
       "stat": "dexterity",
       "desc": "You only take 80% of total damage",
       "requirements": [7, 0, 7, 0, "deflect"],
       "status": "active",
-      "action": 0.8
+      "action": "0.2"
 
     },
     "greater deflect": {
@@ -181,7 +181,7 @@
       "desc": "You only take 70% of total damage",
       "requirements": [9, 0, 9, 0, "great deflect"],
       "status": "active",
-      "action": 0.7
+      "action": "0.3"
     },
     "lightning reflexes": {
       "stat": "dexterity",
