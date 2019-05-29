@@ -895,63 +895,7 @@ class Combat:
                 print("Please select a number between 0 and " + mod + ": ")
         return int(mMod)
 
-    # def pOneUseFeat(self):
-    #     crippling = self.pOneInfo['crippling']
-    #     staggering = self.pOneInfo["staggering"]
-    #     evasion = self.pOneInfo["evasion"]
-    #     quick = self.pOneInfo["quick"]
-    #     ripose = self.pOneInfo["ripose"]
-    #     deflect = self.pOneInfo["deflect"]
-    #     reckless = self.pOneInfo["reckless"]
-    #     titan = self.pOneInfo["titan's blow"]
-    #     strike = self.pOneInfo["true strike"]
-
-
-
-    # def pOneCripple(self):
-    #     crippling = self.pOneInfo['crippling']
-    #     if crippling == 0:
-    #         print("You have already used this feat.")
-    #     else:
-    #         crippling -= 1
-    #     if active == "crippling blow":
-    #         crippleMod = -1
-    #         return crippleMod
-    #     elif active == "improved crippling blow":
-    #         crippleMod = -2
-    #         return crippleMod
-    #     elif active == "greater crippling blow":
-    #         crippleMod = -3
-    #         return crippleMod
-
-
 # ------------------------------------TEST CODE-----------------------------------------
 # Run module as stand alone to test.
 # combat = Combat()
 # combat.initiative()
-
-
-
-    # def powerAttack(self):
-    #     answer = input("How many points? ")
-    #     print(self.list)
-    #     self.list[5] = hit
-    #     self.list[6] = damage
-    #     print(hit)
-    #     print(damage)
-    #     hit = hit - answer
-    #     damage = damage + answer
-    #     print(hit)
-    #     print(damage)
-    #
-    # def players(self):
-    #     opponentOne = input("Who is the first opponent?").lower()
-    #     charFile = open(opponentOne + ".txt", "r", encoding="utf-8")
-    #     charStats = json.load(charFile)
-    #     charFile.close()
-    #     list = []
-    #     for key in charStats:
-    #         print(key)
-    #         list.append(key)
-    #     print(list)
-    #     self.list = list
