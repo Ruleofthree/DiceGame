@@ -26,6 +26,8 @@ class Combat:
         self.pOnecMod = 0
         self.pOnedMod = 0
         self.pOnemMod = 0
+        self.pOneEvade = 1
+        self.pOneQuickDamage = 0
         self.pOneFeatInfo = None
         self.pOneSpentFeat =[]
         # self.pOneCripple = 0
@@ -34,6 +36,8 @@ class Combat:
         self.pTwocMod = 0
         self.pTwodMod = 0
         self.pTwomMod = 0
+        self.pTwoEvade = 1
+        self.pTwoQuickDamage = 0
         self.pTwoFeatInfo = None
         self.pTwoSpentFeat = []
         # self.pTwoCripple = 0
@@ -213,7 +217,7 @@ class Combat:
             pOneToHit = self.pOneInfo['hit']
             pTwoAC = self.pTwoInfo['ac']
 
-            # If player has power attack, combat expertise, defensive fighting, or masochist, go to those methods first
+            # If Player One has power attack, combat expertise, defensive fighting, or masochist, go to those methods first
             # before continuing.
             for word in self.pOneInfo["feats taken"]:
                 if word == "power attack":
@@ -250,7 +254,7 @@ class Combat:
             # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
             print("Roll: " + str(hit) + " Base: " + str(pOneToHit) + " PA: " + str(pMod) + " CE: " + str(cMod) + " DF: " + str(dMod) + " MC: " + str(mMod))
 
-            # find opponent's total AC
+            # find Player One's total AC
             totalAC = pTwoAC + pTwodMod - pTwomMod
 
             # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
@@ -290,7 +294,7 @@ class Combat:
             pTwoToHit = self.pTwoInfo['hit']
             pOneAC = self.pOneInfo['ac']
 
-            # If player has power attack, combat expertise, defensive fighting, or masochist, go to those methods first
+            # If Player Two has power attack, combat expertise, defensive fighting, or masochist, go to those methods first
             # before continuing.
             for word in self.pTwoInfo["feats taken"]:
                 if word == "power attack":
@@ -327,7 +331,7 @@ class Combat:
             # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
             print("Roll: " + str(hit) + " Base: " + str(pTwoToHit) + " PA: " + str(pMod) + " CE: " + str(cMod) + " DF: " + str(dMod) + " MC: " + str(mMod))
 
-            # find opponent's total AC
+            # find Player One's total AC
             totalAC = int(pOneAC + pOnedMod - pOnemMod)
 
             # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
@@ -366,7 +370,7 @@ class Combat:
         if pTwoFeatUsed is None:
             pTwoFeatUsed = ["none", 0]
 
-        # Obtain players base damage and base modifier, and roll damage. Assign 'power attack' and 'combat defense'
+        # Obtain Player One's base damage and base modifier, and roll damage. Assign 'power attack' and 'combat defense'
         # modifiers to variables, and roll damage.
         pOneBaseDamage = self.pOneInfo['base damage']
         pOneModifier = self.pOneInfo['damage modifier']
@@ -380,12 +384,12 @@ class Combat:
             damage = damage * 2
             self.critical = 0
 
-        # if player used feat 'titan blow', apply 50% bonus damage.
+        # if Player One used feat 'titan blow', apply 50% bonus damage.
         if pOneFeatUsed[0] == "titan blow":
             print(self.playerOne.capitalize() + " used the feat 'titan blow'.")
             damage = damage * float(pOneFeatUsed[1])
 
-        # if player's opponent use 'staggering blow' half damage done.
+        # if Player Two use 'staggering blow' half damage done.
         if pTwoFeatUsed[0] == "staggering blow":
             print(self.playerTwo.capitalize() + " used the feat 'staggering blow', halving " + self.playerOne.capitalize() + "'s damage roll")
             damage = damage * float(pTwoFeatUsed[1])
@@ -395,6 +399,80 @@ class Combat:
         if damage < 1:
             damage = 1
         total = int(damage + pOneModifier + pMod - cMod)
+
+        # if Player Two used 'quick strike', 'improved quick strike', or 'greater quick strike', apply the return
+        # damage here
+        pTwoBaseDamage = self.pTwoInfo['base damage']
+        pTwoModifier = self.pTwoInfo['damage modifier']
+        pTwoMinimum, pTwoMaximum = pTwoBaseDamage.split('d')
+        pMod = self.pTwopMod
+        cMod = self.pTwocMod
+
+        # apply the damage from 'quick strike', 'improved quick strike', or 'greater quick strike' if such feats were
+        # used
+        if pTwoFeatUsed[0] == "quick strike":
+
+            # Roll damage for Player One, and multiply it by desired amount.
+            damage = random.randint(int(pTwoMinimum), int(pOTwoMaximum))
+            total = (damage + pTwoModifier + pMod - cMod)
+            quickDamage = int(total * float(pTwoFeatUsed[1]))
+
+            # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
+            self.pTwoQuickDamage = quickDamage
+            self.pOneCurrentHP = self.pOneCurrentHP - self.pTwoQuickDamage
+            print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pTwoQuickDamage) + "hp of damage.")
+
+        if pTwoFeatUsed[0] == "improved quick strike":
+
+            # Roll damage for Player one, and multiply it by desired amount.
+            damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
+            total = (damage + pTwoModifier + pMod - cMod)
+            quickDamage = int(total * float(pTwoFeatUsed[1]))
+
+            # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
+            self.pTwoQuickDamage = quickDamage
+            self.pOneCurrentHP = self.pOneCurrentHP - self.pTwoQuickDamage
+            print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pTwoQuickDamage) + "hp of damage.")
+
+        if pTwoFeatUsed[0] == "greater quick strike":
+            # roll damage for player One, and multiply it by desired amount
+            damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
+            total = (damage + pTwoModifier + pMod - cMod)
+            quickDamage = int(total * float(pTwoFeatUsed[1]))
+
+            # Ensure damage is always at least 1hp and print out result
+            self.pTwoQuickDamage = quickDamage
+            self.pOneCurrentHP = self.pOneCurrentHP - self.pTwoQuickDamage
+            print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pTwoQuickDamage) + "hp of damage.")
+
+        #If Player Two has Evasion, Improved Evasion, or Greater Evasion, give them the option to use it.
+        for word in self.pTwoInfo['feats taken']:
+            if self.pTwoEvade == 1 and word == "evasion":
+                answer = input(self.playerTwo.capitalize() + ", do you wish to evade?").lower()
+                if answer == "yes":
+                    total = int(total * 0.75)
+                    self.totalDamage = total
+                    self.pTwoEvade = 0
+            elif self.pTwoEvade == 1 and word == "improved evasion":
+                answer = input(self.playerTwo.capitalize() + ", do you wish to evade?").lower()
+                if answer == "yes":
+                    total = int(total * 0.5)
+                    self.totalDamage = total
+                    self.pTwoEvade = 0
+            elif self.pTwoEvade == 1 and word == "improved evasion":
+                answer = input(self.playerTwo.capitalize() + ", do you wish to evade?").lower()
+                if answer == "yes":
+                    total = 0
+                    self.totalDamage = total
+                    self.pTwoEvade = 0
+
         self.totalDamage = total
 
         # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
@@ -418,7 +496,7 @@ class Combat:
         if pTwoFeatUsed is None:
             pTwoFeatUsed = ["none", 0]
 
-        # Obtain players base damage and base modifier, and roll damage. Assign 'power attack' and 'combat defense'
+        # Obtain Player Two's base damage and base modifier, and roll damage. Assign 'power attack' and 'combat defense'
         # modifiers to variables, and roll damage.
         pTwoBaseDamage = self.pTwoInfo['base damage']
         pTwoModifier = self.pTwoInfo['damage modifier']
@@ -432,12 +510,12 @@ class Combat:
             damage = damage * 2
             self.critical = 0
 
-        # if player used feat 'titan blow', apply 50% bonus damage.
+        # if Player Two used feat 'titan blow', apply 50% bonus damage.
         if pTwoFeatUsed[0] == "titan blow":
             print(self.playerTwo.capitalize() + " used the feat 'titan blow'.")
             damage = damage * float(pTwoFeatUsed[1])
 
-        # if player's opponent use 'staggering blow' half damage done.
+        # if Player One use 'staggering blow' half damage done.
         if pOneFeatUsed[0] == "staggering blow":
             print(self.playerOne.capitalize() + " used the feat 'staggering blow', halving " + self.playerTwo.capitalize() + "'s damage roll")
             damage = damage * float(pOneFeatUsed[1])
@@ -447,8 +525,81 @@ class Combat:
         if damage < 1:
             damage = 1
         total = int(damage + pTwoModifier + pMod - cMod)
-        self.totalDamage = total
 
+        # if Player One used 'quick strike', 'improved quick strike', or 'greater quick strike', apply the return
+        # damage here
+        pOneBaseDamage = self.pOneInfo['base damage']
+        pOneModifier = self.pOneInfo['damage modifier']
+        pOneMinimum, pOneMaximum = pOneBaseDamage.split('d')
+        pMod = self.pOnepMod
+        cMod = self.pOnecMod
+
+        # apply the damage from 'quick strike', 'improved quick strike', or 'greater quick strike' if such feats were
+        # used
+        if pOneFeatUsed[0] == "quick strike":
+
+            # Roll damage for Player One, and multiply it by desired amount.
+            damage = random.randint(int(pOneMinimum), int(pOneMaximum))
+            total = (damage + pOneModifier + pMod - cMod)
+            quickDamage = int(total * float(pOneFeatUsed[1]))
+
+            # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
+            self.pOneQuickDamage = quickDamage
+            self.pTwoCurrentHP = self.pTwoCurrentHP - self.pOneQuickDamage
+            print(self.playerOne.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pOneQuickDamage) + "hp of damage.")
+
+        if pOneFeatUsed[0] == "improved quick strike":
+
+            # Roll damage for Player one, and multiply it by desired amount.
+            damage = random.randint(int(pOneMinimum), int(pOneMaximum))
+            total = (damage + pOneModifier + pMod - cMod)
+            quickDamage = int(total * float(pOneFeatUsed[1]))
+
+            # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
+            self.pOneQuickDamage = quickDamage
+            self.pTwoCurrentHP = self.pTwoCurrentHP - self.pOneQuickDamage
+            print(self.playerOne.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pOneQuickDamage) + "hp of damage.")
+
+        if pOneFeatUsed[0] == "greater quick strike":
+
+            #roll damage for player One, and multiply it by desired amount
+            damage = random.randint(int(pOneMinimum), int(pOneMaximum))
+            total = (damage + pOneModifier + pMod - cMod)
+            quickDamage = int(total * float(pOneFeatUsed[1]))
+
+            # Ensure damage is always at least 1hp and print out result
+            self.pOneQuickDamage = quickDamage
+            self.pTwoCurrentHP = self.pTwoCurrentHP - self.pOneQuickDamage
+            print(self.playerOne.capitalize() + " used 'quick strike,' managing to do an additional " + str(self.pOneQuickDamage) + "hp of damage.")
+
+        #If Player One has Evasion, Improved Evasion, or Greater Evasion, give them the option to use it.
+        for word in self.pOneInfo['feats taken']:
+            if self.pOneEvade == 1 and word == "evasion":
+                answer = input(self.playerOne.capitalize() + ", do you wish to evade?").lower()
+                if answer == "yes":
+                    total = int(total * 0.75)
+                    self.totalDamage = total
+                    self.pOneEvade = 0
+            elif self.pOneEvade == 1 and word == "improved evasion":
+                answer = input(self.playerOne.capitalize() + ", do you wish to evade?").lower()
+                if answer == "yes":
+                    total = int(total * 0.5)
+                    self.totalDamage = total
+                    self.pOneEvade = 0
+            elif self.pOneEvade == 1 and word == "improved evasion":
+                answer = input(self.playerOneo.capitalize() + ", do you wish to evade?").lower()
+                if answer == "yes":
+                    total = 0
+                    self.totalDamage = total
+                    self.pOneEvade = 0
+
+        self.totalDamage = total
         # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
         print("Roll: " + str(damage) + " Modifier: " + str(pTwoModifier) + " PA: " + str(pMod) + " CD: " + str(cMod))
 
@@ -461,12 +612,20 @@ class Combat:
     # Two methods to update hit points as the fight progresses along.
 
     def getHitPointsPOne(self):
-        self.pOneCurrentHP = self.pOneCurrentHP - self.totalDamage
+        if self.pTwoQuickDamage != 0:
+            self.pOneCurrentHP = self.pOneCurrentHP - self.totalDamage - self.pTwoQuickDamage
+            self.pTwoQuickDamage = 0
+        else:
+            self.pOneCurrentHP = self.pOneCurrentHP - self.totalDamage
         self.token = 2
         self.scoreboard()
 
     def getHitPointsPTwo(self):
-        self.pTwoCurrentHP = self.pTwoCurrentHP - self.totalDamage
+        if self.pOneQuickDamage != 0:
+            self.pTwoCurrentHP = self.pTwoCurrentHP - self.totalDamage - self.pOneQuickDamage
+            self.pOneQuickDamage = 0
+        else:
+            self.pTwoCurrentHP = self.pTwoCurrentHP - self.totalDamage
         self.token = 1
         self.scoreboard()
 
@@ -558,15 +717,15 @@ class Combat:
 
             with open(self.winner + '.txt', 'r+') as file:
                 charData = json.load(file)
-                charData['level'] = newLevel
-                charData['hitpoints'] = levelDict[newLevel][0]
+                charData['level'] = int(newLevel)
+                charData['hitpoints'] = int(levelDict[newLevel][0])
                 charData['base damage'] = str(levelDict[newLevel][1]) + "d" + str(levelDict[newLevel][2])
                 charData['total feats'] = levelDict[newLevel][4]
-                charData['hit'] = levelDict[newLevel][5]
-                charData['damage modifier'] = levelDict[newLevel][5]
-                charData['ac'] = levelDict[newLevel][6]
-                charData['currentxp'] = self.currentPlayerXP
-                charData['nextlevel'] = levelDict[newLevel][7]
+                charData['hit'] = int(levelDict[newLevel][5])
+                charData['damage modifier'] = int(levelDict[newLevel][5])
+                charData['ac'] = int(levelDict[newLevel][6])
+                charData['currentxp'] = int(self.currentPlayerXP)
+                charData['nextlevel'] = int(levelDict[newLevel][7])
                 file.seek(0)
                 file.write(json.dumps(charData, ensure_ascii=False, indent=2))
                 file.truncate()
