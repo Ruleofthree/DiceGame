@@ -6,49 +6,48 @@ class Combat:
 
     def __init__(self):
         #STRINGS
-        self.playerOne = ""
-        self.playerTwo = ""
-        self.winner = ""
+        self.playerOne        = ""
+        self.playerTwo        = ""
+        self.winner           = ""
         # PLAYER INFO
-        self.pOneInfo = {}
-        self.pTwoInfo = {}
+        self.pOneInfo         = {}
+        self.pTwoInfo         = {}
         # HP AND TURN COUNTERS
-        self.count = 0
-        self.token = 0
-        self.critical = 0
-        self.totalDamage = 0
-        self.pOneTotalHP = 0
-        self.pTwoTotalHP = 0
-        self.pOneCurrentHP = 0
-        self.pTwoCurrentHP = 0
+        self.count            = 0
+        self.token            = 0
+        self.critical         = 0
+        self.totalDamage      = 0
+        self.pOneTotalHP      = 0
+        self.pTwoTotalHP      = 0
+        self.pOneCurrentHP    = 0
+        self.pTwoCurrentHP    = 0
         # PLAYER ONE FEAT COUNTERS
-        self.pOnepMod = 0
-        self.pOnecMod = 0
-        self.pOnedMod = 0
-        self.pOnemMod = 0
-        self.pOneEvade = 1
-        self.pOneQuickDamage = 0
-        self.pOneFeatInfo = None
-        self.pOneSpentFeat =[]
-        # self.pOneCripple = 0
+        self.pOnepMod         = 0
+        self.pOnecMod         = 0
+        self.pOnedMod         = 0
+        self.pOnemMod         = 0
+        self.pOneEvade        = 1
+        self.pOneRiposte      = 0
+        self.pOneQuickDamage  = 0
+        self.pOneFeatInfo     = None
+        self.pOneSpentFeat    = []
         # PLAYER TWO FEAT COUNTERS
-        self.pTwopMod = 0
-        self.pTwocMod = 0
-        self.pTwodMod = 0
-        self.pTwomMod = 0
-        self.pTwoEvade = 1
-        self.pTwoQuickDamage = 0
-        self.pTwoFeatInfo = None
-        self.pTwoSpentFeat = []
-        # self.pTwoCripple = 0
+        self.pTwopMod         = 0
+        self.pTwocMod         = 0
+        self.pTwodMod         = 0
+        self.pTwomMod         = 0
+        self.pTwoEvade        = 1
+        self.pTwoRiposte      = 0
+        self.pTwoQuickDamage  = 0
+        self.pTwoFeatInfo     = None
+        self.pTwoSpentFeat    = []
         # XP AND LEVEL COUNTERS
-        self.pOneLevel = 0
-        self.pTwoLevel = 0
-        self.xp = 0
-        self.currentPlayerXP = 0
-        self.nextLevel = 0
-        self.levelUp = 0
-
+        self.pOneLevel        = 0
+        self.pTwoLevel        = 0
+        self.xp               = 0
+        self.currentPlayerXP  = 0
+        self.nextLevel        = 0
+        self.levelUp          = 0
 
     def setupData(self):
         # opens and loads in player one's character sheet. This is done in this method solely because I'm unsure if
@@ -154,7 +153,6 @@ class Combat:
                 print("You have already used this feat. Please select another or type 'none.': ")
                 pOneLastFeat = None
             elif pOneLastFeat in self.pOneInfo['feats taken']:
-                print()
                 self.pOneSpentFeat.append(pOneLastFeat)
                 self.pOneFeatInfo = [pOneLastFeat, featDict[0][pOneLastFeat]['action']]
                 return self.pOneFeatInfo
@@ -180,7 +178,6 @@ class Combat:
                 print("You have already used this feat. Please select another or type 'none.': ")
                 pTwoLastFeat = None
             elif pTwoLastFeat in self.pTwoInfo['feats taken']:
-                print()
                 self.pTwoSpentFeat.append(pTwoLastFeat)
                 self.pTwoFeatInfo = [pTwoLastFeat, featDict[0][pTwoLastFeat]['action']]
                 return self.pTwoFeatInfo
@@ -205,7 +202,6 @@ class Combat:
             pOneFeatUsed = ["none", 0]
         if pTwoFeatUsed is None:
             pTwoFeatUsed = ["none", 0]
-        print(pOneFeatUsed)
 
         # If the feat used was 'true strike' forgo rolling to see if player hit opponent, and go straight to damage.
         if pOneFeatUsed[0] == "true strike":
@@ -243,8 +239,15 @@ class Combat:
                 self.critical = 1
                 print(self.playerOne.capitalize() + " has critically hit.")
 
+            # Notify that Player One is getting the hit benefit from 'riposte'
+            if self.pOneRiposte == 5:
+                print(self.playerOne.capitalize() + " benefits from +5 hit bonus effect from riposte.")
+
             # calculate the total after modifiers
-            total = int(hit + pOneToHit - pMod + cMod - dMod + mMod)
+            total = int(hit + pOneToHit - pMod + cMod - dMod + mMod + self.pOneRiposte)
+
+            # Ensures Player One benefits from hit bonus of Riposte only once.
+            self.pOneRiposte = 0
 
             # if any version of crippling blow was used, tack on the penalty to the above total
             if pTwoFeatUsed[0] == "crippling blow" or pTwoFeatUsed[0] == "improved crippling blow" or pTwoFeatUsed[0] == "greater crippling blow":
@@ -266,11 +269,14 @@ class Combat:
                 print(self.playerOne + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and was successful.")
                 self.pTwodMod = 0
                 self.pTwomMod = 0
+                self.pTwoRiposte = 0
                 self.determineDamagePOne()
             else:
-                print(self.playerTwo + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and missed.")
+                print(self.playerOne + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and missed.")
                 self.pTwodMod = 0
                 self.pTwomMod = 0
+                if pTwoFeatUsed[0] == "riposte":
+                    self.pTwoRiposte = 5
                 self.scoreboard()
 
     def determineHitPTwo(self):
@@ -320,9 +326,16 @@ class Combat:
                 self.critical = 1
                 print(self.playerTwo.capitalize() + " has critically hit.")
 
-            # calculate the total after modifiers
-            total = int(hit + pTwoToHit - pMod + cMod - dMod + mMod)
+            if self.pTwoRiposte == 5:
+                print(self.playerTwo.capitalize() + "Benefits from +5 hit bonus effect from riposte.")
 
+            # calculate the total after modifiers
+            total = int(hit + pTwoToHit - pMod + cMod - dMod + mMod + self.pTwoRiposte)
+
+            # Ensures Player Two benefits from hit bonus of Riposte only once.
+            self.pTwoRiposte = 0
+
+            # if Player Two used riposte, and
             # if any version of crippling blow was used, tack on the penalty to the above total
             if pOneFeatUsed[0] == "crippling blow" or pOneFeatUsed[0] == "improved crippling blow" or pOneFeatUsed[0] == "greater crippling blow":
                 print(self.playerOne.capitalize() + " Used " + pOneFeatUsed[0] + ", Giving " + self.playerTwo.capitalize() + " a " + str(pOneFeatUsed[1]) + " To their attack.")
@@ -343,11 +356,14 @@ class Combat:
                 print(self.playerTwo.capitalize() + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and was successful.")
                 self.pOnedMod = 0
                 self.pOnemMod = 0
+                self.pOneRiposte = 0
                 self.determineDamagePTwo()
             else:
                 print(self.playerTwo.capitalize() + " rolled a " + str(total) + " to hit an AC " + str(totalAC) + " and missed.")
                 self.pOnedMod = 0
                 self.pOnemMod = 0
+                if pOneFeatUsed[0] == "riposte":
+                    self.pOneRiposte = 5
                 self.scoreboard()
 
 
@@ -355,8 +371,6 @@ class Combat:
     # 'base damage' key of the character's json, Parses it out to remove the 'd', and uses the first number as the
     # minimum range, and second for the maximum. After determining the random value, then adds any modifiers to the roll
     # and displays that as the damage.
-    # Note: Want to add in capabilities to double the ROLL of the damage only, should the player have rolled a 'natural
-    # 20' to hit (value of 20 before any modifiers were added)
 
     def determineDamagePOne(self):
 
@@ -411,9 +425,8 @@ class Combat:
         # apply the damage from 'quick strike', 'improved quick strike', or 'greater quick strike' if such feats were
         # used
         if pTwoFeatUsed[0] == "quick strike":
-
             # Roll damage for Player One, and multiply it by desired amount.
-            damage = random.randint(int(pTwoMinimum), int(pOTwoMaximum))
+            damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
             total = (damage + pTwoModifier + pMod - cMod)
             quickDamage = int(total * float(pTwoFeatUsed[1]))
 
@@ -425,8 +438,7 @@ class Combat:
             print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
                 self.pTwoQuickDamage) + "hp of damage.")
 
-        if pTwoFeatUsed[0] == "improved quick strike":
-
+        elif pTwoFeatUsed[0] == "improved quick strike":
             # Roll damage for Player one, and multiply it by desired amount.
             damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
             total = (damage + pTwoModifier + pMod - cMod)
@@ -440,13 +452,29 @@ class Combat:
             print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
                 self.pTwoQuickDamage) + "hp of damage.")
 
-        if pTwoFeatUsed[0] == "greater quick strike":
+        elif pTwoFeatUsed[0] == "greater quick strike":
             # roll damage for player One, and multiply it by desired amount
             damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
             total = (damage + pTwoModifier + pMod - cMod)
             quickDamage = int(total * float(pTwoFeatUsed[1]))
 
             # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
+            self.pTwoQuickDamage = quickDamage
+            self.pOneCurrentHP = self.pOneCurrentHP - self.pTwoQuickDamage
+            print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pTwoQuickDamage) + "hp of damage.")
+
+        elif pTwoFeatUsed[0] == "riposte":
+            # roll damage for player One, and multiply it by desired amount
+            damage = random.randint(int(pTwoMinimum), int(pTwoMaximum))
+            total = (damage + pTwoModifier + pMod - cMod)
+            quickDamage = int(total * float(pTwoFeatUsed[1][0]))
+
+            # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
             self.pTwoQuickDamage = quickDamage
             self.pOneCurrentHP = self.pOneCurrentHP - self.pTwoQuickDamage
             print(self.playerTwo.capitalize() + " used 'quick strike,' managing to do an additional " + str(
@@ -454,25 +482,51 @@ class Combat:
 
         #If Player Two has Evasion, Improved Evasion, or Greater Evasion, give them the option to use it.
         for word in self.pTwoInfo['feats taken']:
+            answer = ""
             if self.pTwoEvade == 1 and word == "evasion":
-                answer = input(self.playerTwo.capitalize() + ", do you wish to evade?").lower()
-                if answer == "yes":
-                    total = int(total * 0.75)
-                    self.totalDamage = total
-                    self.pTwoEvade = 0
+                while answer != "yes" and answer != "no":
+                    answer = input(self.playerTwo.capitalize() + ", do you wish to evade? ").lower()
+                    if answer == "yes":
+                        total = int(total * 0.75)
+                        self.totalDamage = total
+                        self.pTwoEvade = 0
+                    elif answer == "no":
+                        pass
+                    else:
+                        print("Answer 'yes' or 'no'")
             elif self.pTwoEvade == 1 and word == "improved evasion":
-                answer = input(self.playerTwo.capitalize() + ", do you wish to evade?").lower()
-                if answer == "yes":
-                    total = int(total * 0.5)
-                    self.totalDamage = total
-                    self.pTwoEvade = 0
-            elif self.pTwoEvade == 1 and word == "improved evasion":
-                answer = input(self.playerTwo.capitalize() + ", do you wish to evade?").lower()
-                if answer == "yes":
-                    total = 0
-                    self.totalDamage = total
-                    self.pTwoEvade = 0
+                while answer != "yes" and answer != "no":
+                    answer = input(self.playerTwo.capitalize() + ", do you wish to evade? ").lower()
+                    if answer == "yes":
+                        total = int(total * 0.5)
+                        self.totalDamage = total
+                        self.pTwoEvade = 0
+                    elif answer == "no":
+                        pass
+                    else:
+                        print("Answer 'yes' or 'no'")
+            elif self.pTwoEvade == 1 and word == "greater evasion":
+                while answer != "yes" and answer != "no":
+                    answer = input(self.playerTwo.capitalize() + ", do you wish to evade? ").lower()
+                    if answer == "yes":
+                        total = 0
+                        self.totalDamage = total
+                        self.pTwoEvade = 0
+                    elif answer == "no":
+                        pass
+                    else:
+                        print("Answer 'yes' or 'no'")
 
+        #If Player Two used 'deflect', 'improved deflect', or 'greater deflect', apply damage mitigation here
+        if pTwoFeatUsed[0] == "deflect":
+            print(self.playerTwo.capitalize() + " used deflect to lessen the blow.")
+            total = int(total * float(pTwoFeatUsed[1]))
+        elif pTwoFeatUsed[0] == "improved deflect":
+            print(self.playerTwo.capitalize() + " used deflect to lessen the blow")
+            total = int(total * float(pTwoFeatUsed[1]))
+        elif pTwoFeatUsed[0] == "greater deflect":
+            print(self.playerTwo.capitalize() + " used deflect to lessen the blow")
+            total = int(total * float(pTwoFeatUsed[1]))
         self.totalDamage = total
 
         # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
@@ -537,7 +591,6 @@ class Combat:
         # apply the damage from 'quick strike', 'improved quick strike', or 'greater quick strike' if such feats were
         # used
         if pOneFeatUsed[0] == "quick strike":
-
             # Roll damage for Player One, and multiply it by desired amount.
             damage = random.randint(int(pOneMinimum), int(pOneMaximum))
             total = (damage + pOneModifier + pMod - cMod)
@@ -552,7 +605,6 @@ class Combat:
                 self.pOneQuickDamage) + "hp of damage.")
 
         if pOneFeatUsed[0] == "improved quick strike":
-
             # Roll damage for Player one, and multiply it by desired amount.
             damage = random.randint(int(pOneMinimum), int(pOneMaximum))
             total = (damage + pOneModifier + pMod - cMod)
@@ -567,7 +619,6 @@ class Combat:
                 self.pOneQuickDamage) + "hp of damage.")
 
         if pOneFeatUsed[0] == "greater quick strike":
-
             #roll damage for player One, and multiply it by desired amount
             damage = random.randint(int(pOneMinimum), int(pOneMaximum))
             total = (damage + pOneModifier + pMod - cMod)
@@ -578,26 +629,71 @@ class Combat:
             self.pTwoCurrentHP = self.pTwoCurrentHP - self.pOneQuickDamage
             print(self.playerOne.capitalize() + " used 'quick strike,' managing to do an additional " + str(self.pOneQuickDamage) + "hp of damage.")
 
+        if pOneFeatUsed[0] == "riposte":
+            # roll damage for player One, and multiply it by desired amount
+            damage = random.randint(int(pOneMinimum), int(pOneMaximum))
+            total = (damage + pOneModifier + pMod - cMod)
+            quickDamage = int(total * float(pOneFeatUsed[1][0]))
+
+            # Ensure damage is always at least 1hp and print out result
+            if quickDamage < 1:
+                quickDamage = 1
+            self.pOneQuickDamage = quickDamage
+            self.pTwoCurrentHP = self.pTwoCurrentHP - self.pTwoQuickDamage
+            print(self.playerOne.capitalize() + " used 'quick strike,' managing to do an additional " + str(
+                self.pOneQuickDamage) + "hp of damage.")
+            self.pOneRiposte = 1
+
         #If Player One has Evasion, Improved Evasion, or Greater Evasion, give them the option to use it.
         for word in self.pOneInfo['feats taken']:
+            answer = ""
             if self.pOneEvade == 1 and word == "evasion":
-                answer = input(self.playerOne.capitalize() + ", do you wish to evade?").lower()
-                if answer == "yes":
-                    total = int(total * 0.75)
-                    self.totalDamage = total
-                    self.pOneEvade = 0
+                while answer != "yes" and answer != "no":
+                    answer = input(self.playerOne.capitalize() + ", do you wish to evade? ").lower()
+                    if answer == "yes":
+                        total = int(total * 0.5)
+                        self.totalDamage = total
+                        self.pTwoEvade = 0
+                    elif answer == "no":
+                        pass
+                    else:
+                        print("Answer 'yes' or 'no'")
             elif self.pOneEvade == 1 and word == "improved evasion":
-                answer = input(self.playerOne.capitalize() + ", do you wish to evade?").lower()
-                if answer == "yes":
-                    total = int(total * 0.5)
-                    self.totalDamage = total
-                    self.pOneEvade = 0
-            elif self.pOneEvade == 1 and word == "improved evasion":
-                answer = input(self.playerOneo.capitalize() + ", do you wish to evade?").lower()
-                if answer == "yes":
-                    total = 0
-                    self.totalDamage = total
-                    self.pOneEvade = 0
+                while answer != "yes" and answer != "no":
+                    answer = input(self.playerOne.capitalize() + ", do you wish to evade? ").lower()
+                    if answer == "yes":
+                        total = int(total * 0.5)
+                        self.totalDamage = total
+                        self.pTwoEvade = 0
+                    elif answer == "no":
+                        pass
+                    else:
+                        print("Answer 'yes' or 'no'")
+            elif self.pOneEvade == 1 and word == "greater evasion":
+                while answer != "yes" and answer != "no":
+                    answer = input(self.playerTwo.capitalize() + ", do you wish to evade? ").lower()
+                    if answer == "yes":
+                        total = int(total * 0.5)
+                        self.totalDamage = total
+                        self.pTwoEvade = 0
+                    elif answer == "no":
+                        pass
+                    else:
+                        print("Answer 'yes' or 'no'")
+
+        #If Player One used 'deflect', 'improved deflect', or 'greater deflect', apply damage mitigation here
+        if pOneFeatUsed[0] == "deflect":
+            print(self.playerOne.capitalize() + " used deflect to lessen the blow.")
+            total = int(total * float(pOneFeatUsed[1]))
+        elif pOneFeatUsed[0] == "improved deflect":
+            print(self.playerOne.capitalize() + " used deflect to lessen the blow")
+            total = int(total * float(pOneFeatUsed[1]))
+        elif pOneFeatUsed[0] == "greater deflect":
+            print(self.playerOne.capitalize() + " used deflect to lessen the blow")
+            print(pOneFeatUsed[1])
+            print(total)
+            total = int(total * float(pOneFeatUsed[1]))
+            print(total)
 
         self.totalDamage = total
         # testing data to see that modifiers are carrying over correctly. Delete this when project is finished.
@@ -646,10 +742,13 @@ class Combat:
         if self.pOneCurrentHP > 0 and self.pTwoCurrentHP > 0:
             if self.token == 1:
                 self.count += 1
+                self.token += 1
                 self.pTwoFeatUsed()
                 self.determineHitPTwo()
             elif self.token == 2:
+                print("Am I here?")
                 self.count += 1
+                self.token -= 1
                 self.pOneFeatUsed()
                 self.determineHitPOne()
         else:
@@ -658,34 +757,56 @@ class Combat:
     # Determines xp for the victor. Formula is: 10 * Difference in opponent's HP + (difference in level * 50), where
     # difference in level will never equal 0. Added a small 'if' statement to ensure that level never equals 0, which
     # can only happen if both player character's are of the same level.
-    # This is a logic problem in this I'm unsure how to deal with. Right now. High level characters can abuse the xp
-    # system by fighting low level characters, and getting a great deal of xp based on how the formula is setup. Want
-    # to set up a way in which program detects if winning player was higher level than losing player. If so, change
-    # formula to just 10 * Difference in opponent's HP. If winning player was lower, then keep formula as is.
-
     def setXP(self):
         if self.pOneCurrentHP <= 0:
             print(self.playerTwo.capitalize() + " won in " + str(int(self.count / 2)) + " rounds")
             level = abs(self.pOneLevel - self.pTwoLevel)
             if level == 0:
                 level = 1
-            levelDiff = level * 50
-            differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
-            self.xp = 10 * differHP + levelDiff
+            if level <= 3:
+                levelDiff = level * self.pOneLevel
+                differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
+                self.xp = 10 * levelDiff + differHP
+                print(self.playerTwo.capitalize() + " has earned: " + str(self.xp) + " experience points.")
+            elif 3 > level < 6:
+                levelDiff = level * self.pOneLevel
+                differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
+                self.xp = 7 * levelDiff + differHP
+            elif 7 > level < 10:
+                levelDiff = level * self.pOneLevel
+                differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
+                self.xp = 5 * levelDiff + differHP
+            else:
+                print("As the level difference was greater than 10, no XP was awarded.")
             print(self.playerTwo.capitalize() + " has earned: " + str(self.xp) + " experience points.")
             self.currentPlayerXP = self.pTwoInfo['currentxp'] + self.xp
             self.nextLevel = self.pTwoInfo['nextlevel']
             self.winner = self.playerTwo
             self.levelUp = self.pTwoInfo['level']
             self.checkLevel()
+
         elif self.pTwoCurrentHP <= 0:
             print(self.playerOne.capitalize() + " won in " + str(int(self.count / 2)) + " rounds")
             level = abs(self.pOneLevel - self.pTwoLevel)
             if level == 0:
                 level = 1
-            levelDiff = level * 50
-            differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
-            self.xp = 10 * differHP + levelDiff
+            if level <= 3:
+                levelDiff = level * self.pOneLevel
+                differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
+                self.xp = 10 * levelDiff + differHP
+                print(self.playerOne.capitalize() + " has earned: " + str(self.xp) + " experience points.")
+            elif 3 > level < 6:
+                levelDiff = level * self.pOneLevel
+                differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
+                self.xp = 7 * levelDiff + differHP
+                print(self.playerOne.capitalize() + " has earned: " + str(self.xp) + " experience points.")
+            elif 7 > level < 10:
+                levelDiff = level * self.pOneLevel
+                differHP = abs(self.pOneCurrentHP - self.pTwoCurrentHP)
+                self.xp = 5 * levelDiff + differHP
+                print(self.playerOne.capitalize() + " has earned: " + str(self.xp) + " experience points.")
+            else:
+                print("As the level difference was greater than 10, no XP was awarded.")
             print(self.playerOne.capitalize() + " has earned: " + str(self.xp) + " experience points.")
             self.currentPlayerXP = self.pOneInfo['currentxp'] + self.xp
             self.nextLevel = self.pOneInfo['nextlevel']
