@@ -1,4 +1,4 @@
-import gameFeats
+from cogs import gameFeats
 import json
 
 """

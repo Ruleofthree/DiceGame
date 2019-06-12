@@ -1,6 +1,7 @@
 import json
 import random
-import gameFeats
+from cogs import gameFeats
+
 
 class Combat:
 

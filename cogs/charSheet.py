@@ -1,5 +1,6 @@
 import json
-import gameFeats
+from cogs import gameFeats
+import os
 
 """
 This entire module is suppose to be your one stop shop for json files. It would detect which character profile you want
@@ -104,8 +105,9 @@ class SaveModule:
         featList = gameFeats.featDict()[1]
 
         character = input("Character name: ").lower()
-
-        charFile = open(character + ".txt", "r", encoding="utf-8")
+        path = os.getcwd()
+        charFolder = os.path.join(path + "/characters/")
+        charFile = open(charFolder + character + ".txt", "r", encoding="utf-8")
         charStats = json.load(charFile)
         charFile.close()
 

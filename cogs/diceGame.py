@@ -1,10 +1,5 @@
 import cmd
-import json
-import random
-import charCreation
-import charFeats
-import charSheet
-import gameCombat
+from cogs import charCreation, charFeats, charSheet, gameCombat
 
 """
 The intended scope of this game is to eventually be placed within a chatroom. I intend to start with discord, as making

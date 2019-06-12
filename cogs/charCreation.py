@@ -1,4 +1,5 @@
 import json
+import os
 
 '''
 Character Creation.
@@ -176,7 +177,10 @@ class Character:
 
         print("Your character has been saved.")
         # create the JSON file
-        file = open(name + ".txt", "w", encoding="utf-8")
+        path = os.getcwd()
+        charFolder = os.path.join(path + "/characters/")
+        print(charFolder)
+        file = open(charFolder + name + ".txt", "w", encoding="utf-8")
         json.dump(characterFile, file, ensure_ascii=False, indent=2)
 
 
