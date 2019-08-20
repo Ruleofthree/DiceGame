@@ -1,5 +1,6 @@
 import json
 import random
+import os
 from cogs import gameFeats
 
 
@@ -55,14 +56,16 @@ class Combat:
         # loading json files in __init__ is actually a good idea. If I understand things correctly, things in a class's
         # __init__ is ran EVERY TIME a method is called within it. If so, then the json files would be opened, loaded,
         # and closed multiple times in a single run. Seems inefficient, and bad coding.
+        path = os.getcwd()
+        charFolder = os.path.join(path + "/characters/")
         self.playerOne = input("Who is the challenger? ")
-        charFile = open(self.playerOne + ".txt", "r", encoding="utf-8")
+        charFile = open(charFolder + self.playerOne + ".txt", "r", encoding="utf-8")
         pOneInfo = json.load(charFile)
         charFile.close()
         self.pOneInfo = pOneInfo
 
         self.playerTwo = input("And their opponent? ")
-        charFile = open(self.playerTwo + ".txt", "r", encoding="utf-8")
+        charFile = open(charFolder + self.playerTwo + ".txt", "r", encoding="utf-8")
         pTwoInfo = json.load(charFile)
         charFile.close()
         self.pTwoInfo = pTwoInfo
